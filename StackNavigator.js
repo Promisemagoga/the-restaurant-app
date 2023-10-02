@@ -16,6 +16,8 @@ function StackNavigator() {
                 <Stack.Screen name='SignIn' component={SignIn} />
                 <Stack.Screen name='SignUp' component={SignUp} />
                 <Stack.Screen name='profile' component={UserProfile} />
+                <Stack.Screen name='home' component={Home} />
+
             </Stack.Group>
         </Stack.Navigator>
     )
