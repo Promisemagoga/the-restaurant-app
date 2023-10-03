@@ -44,25 +44,25 @@ export default function Home() {
           <Text style={{ fontSize: 25, marginBottom: 20, marginTop: 20, color: "#7D7C7C" }}>Offers for you</Text>
           <View style={styles.scrollCour}>
             <Carousel
-             sliderWidth={300}
-             itemWidth={200}
-            >
-            {
-              carouselData.map((item) => (
-        
-                  <View>
-                    <Image source={item.img } style={{ width: 200, height: 200 }} />
-                    <Text>{item.name}</Text>
-                    <Text>{item.description}</Text>
+
+              data={carouselData}
+              renderItem={({ item, index }) => {
+                return (
+                  <View style={styles.carouselContainer}>
+                    <Image source={item.img} style={{ width: 200, height: 200 }} />
+                    <Text style={{color: "#fea70d"}}>{item.name}</Text>
+                    <Text style={{width:200}}>{item.description}</Text>
+                    <Text style={{color:"#009687"}}>{item.offer}</Text>
 
                   </View>
-              
-              )
-              )
-             
-              }
-             
-            </Carousel>
+                )
+              }}
+              sliderWidth={250}
+              itemWidth={320}
+              autoplay={true}
+              loop={true}
+              autoplayInterval={3000}
+            />
           </View>
         </View>
       </ScrollView>
@@ -76,6 +76,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  homeCont: {
+    marginTop: 220
   },
 
   categories: {
@@ -95,6 +99,14 @@ const styles = StyleSheet.create({
 
   catCont: {
     marginTop: 100,
+  },
+
+  scrollCour: {
+    marginLeft: "auto",
+    marginRight: "auto"
+  },
+  carouselContainer:{
+    width: "100%"
   }
 
 });
