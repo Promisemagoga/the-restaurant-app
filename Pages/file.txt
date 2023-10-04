@@ -1,15 +1,27 @@
-  <Carousel
-              data={carouselData}
-              renderItem={({item, index}) => {
-                return (
-                  <View key={index}>
-                    {/* <Image source={require(`../assets/${item.img}`)} style={{width:200,height:200}}/> */}
-                    <Text>{item.name}</Text>
-                    <Text>{item.description}</Text>
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import HomeScreen from './HomeScreen';
+import ProfileScreen from './ProfileScreen';
 
-                  </View>
-                )
-              }}
-              sliderWidth={500}
-              itemWidth={300}
-            />
+const Tab = createBottomTabNavigator();
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default App;
+
+
+<Tab.Navigator
+  tabBarOptions={{
+    activeTintColor: 'red',
+  }}
+>
+  {/* ... */}
+</Tab.Navigator>

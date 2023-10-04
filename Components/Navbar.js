@@ -8,7 +8,7 @@ export default function Navbar() {
             <View style={styles.navBar}>
                 <View style={styles.navContent}>
                     <MaterialCommunityIcons name='map-marker' size={30} color={"#fff"} />
-                    <Text>Pretoria, ZA</Text>
+                    <Text style={{color: "#fff", fontSize: 30,}}>Pretoria, ZA</Text>
                     <MaterialCommunityIcons name='menu' size={30} color={"#fff"} />
                 </View>
                 <TextInput

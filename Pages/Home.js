@@ -3,6 +3,7 @@ import React from 'react'
 import Navbar from '../Components/Navbar';
 import Carousel from 'react-native-snap-carousel';
 import carouselData from '../carouselData';
+import BottomNav from '../Components/BottomNav';
 
 
 
@@ -24,7 +25,7 @@ export default function Home() {
             </View>
             <View style={styles.item}>
               <Image source={require("../assets/drink.png")} style={{ width: "100%", height: 70 }} />
-              <Text>Berages</Text>
+              <Text>Bevarages</Text>
             </View>
             <View style={styles.item}>
               <Image source={require("../assets/cake.png")} style={{ width: "100%", height: 70 }} />
@@ -44,20 +45,18 @@ export default function Home() {
           <Text style={{ fontSize: 25, marginBottom: 20, marginTop: 20, color: "#7D7C7C" }}>Offers for you</Text>
           <View style={styles.scrollCour}>
             <Carousel
-
               data={carouselData}
               renderItem={({ item, index }) => {
                 return (
                   <View style={styles.carouselContainer}>
-                    <Image source={item.img} style={{ width: 200, height: 200 }} />
+                    <Image source={item.img} style={{ width: "100%", height: 250 }} />
                     <Text style={{color: "#fea70d"}}>{item.name}</Text>
                     <Text style={{width:200}}>{item.description}</Text>
                     <Text style={{color:"#009687"}}>{item.offer}</Text>
-
                   </View>
                 )
               }}
-              sliderWidth={250}
+              sliderWidth={300}
               itemWidth={320}
               autoplay={true}
               loop={true}
@@ -66,6 +65,7 @@ export default function Home() {
           </View>
         </View>
       </ScrollView>
+      <BottomNav/>
     </SafeAreaView>
   )
 }
@@ -79,7 +79,8 @@ const styles = StyleSheet.create({
   },
 
   homeCont: {
-    marginTop: 220
+    marginTop: 120,
+    padding: 10
   },
 
   categories: {
@@ -91,7 +92,6 @@ const styles = StyleSheet.create({
   },
 
   item: {
-    // backgroundColor: "pink",
     width: "30%",
     margin: 6,
     padding: 5,
@@ -106,7 +106,10 @@ const styles = StyleSheet.create({
     marginRight: "auto"
   },
   carouselContainer:{
-    width: "100%"
+    // backgroundColor: "#000",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
   }
 
 });
