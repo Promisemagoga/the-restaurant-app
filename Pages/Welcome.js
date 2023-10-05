@@ -19,7 +19,7 @@ export default function Welcome() {
                     <Text style={styles.logoText}>Foodhub</Text>
                     <Text style={styles.logoParagraph}>Are you hungry? We promise to serve you on a siver platter</Text>
                 </View>
-                <TouchableOpacity style={styles.getStarted} onPress={() => navigation.navigate("cat4")}>
+                <TouchableOpacity style={styles.getStarted} onPress={() => navigation.navigate("cat6")}>
                     <Text style={styles.getStartedText}>GET STARTED</Text>
                     <View style={styles.getStartedIcon}>
                         <MaterialCommunityIcons name='greater-than' size={20} color={"#fea70d"} style={styles.icon} />

@@ -4,19 +4,19 @@ import { ScrollView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TouchableOpacity } from 'react-native';
 
-export default function Desert() {
+export default function Sides() {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.productNav}>
-                <Text style={styles.navHead}>Sharing meal list</Text>
+                <Text style={styles.navHead}>Sides list</Text>
                 <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} />
             </View>
             <ScrollView>
                 <View style={styles.ScrollView}>
                     <View style={styles.box}>
                         <View style={styles.contentTop}>
-                            <Text style={styles.description}>Sundae</Text>
-                            <Image source={require("../assets/desert1.jpeg")} style={styles.img} />
+                            <Text style={styles.description}>French Fries</Text>
+                            <Image source={require("../assets/fries.png")} style={styles.img} />
                         </View>
                         <View style={styles.contentBottom}>
                             <View>
@@ -30,13 +30,13 @@ export default function Desert() {
                     </View>
                     <View style={styles.box}>
                         <View style={styles.contentTop}>
-                            <Text style={styles.description}>Chocolate Cake</Text>
-                            <Image source={require("../assets/cake.png")} style={styles.img} />
+                            <Text style={styles.description}>7 Hot Wings</Text>
+                            <Image source={require("../assets/hotwings.jpg")} style={styles.img} />
                         </View>
                         <View style={styles.contentBottom}>
                             <View>
                                 <Text style={styles.price}>R42</Text>
-                                <Text style={styles.name}>Family Meal</Text>
+                                <Text style={styles.name}>Full Chicken</Text>
                             </View>
                             <TouchableOpacity style={styles.addBtn}>
                                 <Text style={styles.addBtnText}>ADD</Text>
@@ -45,8 +45,8 @@ export default function Desert() {
                     </View>
                     <View style={styles.box}>
                         <View style={styles.contentTop}>
-                            <Text style={styles.description}>Coned Vanilla Ice Cream</Text>
-                            <Image source={require("../assets/iceCream.jpg")} style={styles.img} />
+                            <Text style={styles.description}>Full Grilled Chicken</Text>
+                            <Image source={require("../assets/fullChicken.jpg")} style={styles.img} />
                         </View>
                         <View style={styles.contentBottom}>
                             <View>
@@ -60,8 +60,8 @@ export default function Desert() {
                     </View>
                     <View style={styles.box}>
                         <View style={styles.contentTop}>
-                            <Text style={styles.description}>Jumbo happiness</Text>
-                            <Image source={require("../assets/iceCream2.jpg")} style={styles.img} />
+                            <Text style={styles.description}>Bacon Salad</Text>
+                            <Image source={require("../assets/salad.jpg")} style={styles.img} />
                         </View>
                         <View style={styles.contentBottom}>
                             <View>

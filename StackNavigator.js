@@ -9,6 +9,8 @@ import BurgerCat from './Pages/BurgerCat'
 import SharingMeals from './Pages/SharingMeals'
 import Bevarages from './Pages/Baverages'
 import Desert from './Pages/Desert'
+import Sides from './Pages/Sides'
+import KidsMeals from './Pages/KidsMeals'
 
 
 const Stack = createNativeStackNavigator()
@@ -25,6 +27,9 @@ function StackNavigator() {
                 <Stack.Screen name='cat2' component={SharingMeals} />
                 <Stack.Screen name='cat3' component={Bevarages} />
                 <Stack.Screen name='cat4' component={Desert} />
+                <Stack.Screen name='cat5' component={Sides} />
+                <Stack.Screen name='cat6' component={KidsMeals} />
+
 
 
 
