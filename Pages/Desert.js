@@ -3,13 +3,16 @@ import React from 'react'
 import { ScrollView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function Desert() {
+    const navigation = useNavigation()
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.productNav}>
                 <Text style={styles.navHead}>Sharing meal list</Text>
-                <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} />
+                <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")}/>
             </View>
             <ScrollView>
                 <View style={styles.ScrollView}>

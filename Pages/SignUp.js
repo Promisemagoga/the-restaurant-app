@@ -23,7 +23,7 @@ export default function SignUp() {
         />
     </View>
     <TouchableOpacity style={styles.signInBtn}>
-        <Text style={styles.signInBtnText}>SignUp</Text>
+        <Text style={styles.signInBtnText}  onPress={() => navigation.navigate("user")}>SignUp</Text>
     </TouchableOpacity>
     <Text style={styles.newMember}>Already have an account? <Text style={styles.span} onPress={() => navigation.navigate("SignIn")}>signIn</Text></Text>
     </View>

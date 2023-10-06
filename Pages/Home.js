@@ -1,13 +1,16 @@
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import Navbar from '../Components/Navbar';
 import Carousel from 'react-native-snap-carousel';
 import carouselData from '../carouselData';
 import BottomNav from '../Components/BottomNav';
+import { useNavigation } from '@react-navigation/native';
+
 
 
 
 export default function Home() {
+  const navigation = useNavigation()
   return (
     <SafeAreaView style={styles.container}>
       <Navbar />
@@ -15,30 +18,30 @@ export default function Home() {
         <View style={styles.catCont}>
           <Text style={{ fontSize: 25, marginBottom: 20, marginTop: 20, color: "#7D7C7C" }}>Categories</Text>
           <View style={styles.categories}>
-            <View style={styles.item}>
+            <TouchableOpacity style={styles.item} >
               <Image source={require("../assets/logo.png")} style={{ width: "100%", height: 70 }} />
               <Text>Burgers</Text>
-            </View>
-            <View style={styles.item}>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.item}>
               <Image source={require("../assets/sharing.png")} style={{ width: "100%", height: 70 }} />
               <Text>Sharing Meals</Text>
-            </View>
-            <View style={styles.item}>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.item}>
               <Image source={require("../assets/drink.png")} style={{ width: "100%", height: 70 }} />
               <Text>Bevarages</Text>
-            </View>
-            <View style={styles.item}>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.item}>
               <Image source={require("../assets/cake.png")} style={{ width: "100%", height: 70 }} />
               <Text>Dessert</Text>
-            </View>
-            <View style={styles.item}>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.item}>
               <Image source={require("../assets/fries.png")} style={{ width: "100%", height: 70 }} />
               <Text>Sides</Text>
-            </View>
-            <View style={styles.item}>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.item}>
               <Image source={require("../assets/kids-meal.png")} style={{ width: "100%", height: 70 }} />
               <Text>Kiddies Meal</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.offersMainCont}>

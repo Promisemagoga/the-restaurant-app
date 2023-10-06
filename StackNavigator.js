@@ -11,6 +11,7 @@ import Bevarages from './Pages/Baverages'
 import Desert from './Pages/Desert'
 import Sides from './Pages/Sides'
 import KidsMeals from './Pages/KidsMeals'
+import UserPage from './Pages/UserPage'
 
 
 const Stack = createNativeStackNavigator()
@@ -22,6 +23,7 @@ function StackNavigator() {
                 <Stack.Screen name='SignIn' component={SignIn} />
                 <Stack.Screen name='SignUp' component={SignUp} />
                 <Stack.Screen name='profile' component={UserProfile} />
+                <Stack.Screen name='user' component={UserPage} />
                 <Stack.Screen name='home' component={Home} />
                 <Stack.Screen name='cat1' component={BurgerCat} />
                 <Stack.Screen name='cat2' component={SharingMeals} />

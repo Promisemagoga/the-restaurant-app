@@ -3,19 +3,23 @@ import React from 'react'
 import { ScrollView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function KidsMeals() {
+    const navigation = useNavigation()
+  
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.productNav}>
                 <Text style={styles.navHead}>Kids meals list</Text>
-                <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} />
+                <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")}/>
             </View>
             <ScrollView>
                 <View style={styles.ScrollView}>
                     <View style={styles.box}>
                         <View style={styles.contentTop}>
-                            <Text style={styles.description}>French Fries</Text>
+                            <Text style={styles.description}>4 Wings + Crisps +  Sauce + Apple Juice</Text>
                             <Image source={require("../assets/kidSpecial.jpeg")} style={styles.img} />
                         </View>
                         <View style={styles.contentBottom}>
@@ -30,7 +34,7 @@ export default function KidsMeals() {
                     </View>
                     <View style={styles.box}>
                         <View style={styles.contentTop}>
-                            <Text style={styles.description}>7 Hot Wings</Text>
+                            <Text style={styles.description}>Nuggets burger + Fries +  Orange Juice</Text>
                             <Image source={require("../assets/kid2.png")} style={styles.img} />
                         </View>
                         <View style={styles.contentBottom}>
@@ -45,7 +49,7 @@ export default function KidsMeals() {
                     </View>
                     <View style={styles.box}>
                         <View style={styles.contentTop}>
-                            <Text style={styles.description}>Full Grilled Chicken</Text>
+                            <Text style={styles.description}>4 Wings + Crisps +  Sauce + Milk</Text>
                             <Image source={require("../assets/kids-meal.png")} style={styles.img} />
                         </View>
                         <View style={styles.contentBottom}>
@@ -60,7 +64,7 @@ export default function KidsMeals() {
                     </View>
                     <View style={styles.box}>
                         <View style={styles.contentTop}>
-                            <Text style={styles.description}>Bacon Salad</Text>
+                            <Text style={styles.description}>4 Nuggets + fries + Sauce</Text>
                             <Image source={require("../assets/nuggets.jpg")} style={styles.img} />
                         </View>
                         <View style={styles.contentBottom}>
