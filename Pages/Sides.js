@@ -1,78 +1,68 @@
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../Config/firebase';
+
 
 export default function Sides() {
+    const navigation = useNavigation()
+    const [menu, setMenu] = useState([])
+
+
+    useEffect(() => {
+        const viewBurgers = async () => {
+
+            const viewRef = collection(db, "items");
+            const q = query(viewRef, where("category", "==", "Sides"))
+            const querrySnapshot = await getDocs(q)
+            console.log("querrySnapshot", querrySnapshot);
+
+            if (!querrySnapshot.empty) {
+                const data = querrySnapshot.docs.map(doc => doc.data())
+                setMenu(data)
+                console.log("data", data);
+            } else {
+                console.log("No such document!");
+
+            }
+        }
+        viewBurgers()
+    }, [])
+
+
+    if (!menu) return <div>Loading...</div>;
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.productNav}>
-                <Text style={styles.navHead}>Sides list</Text>
-                <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} />
+                <Text style={styles.navHead}>Sharing meal list</Text>
+                <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")} />
             </View>
             <ScrollView>
                 <View style={styles.ScrollView}>
-                    <View style={styles.box}>
-                        <View style={styles.contentTop}>
-                            <Text style={styles.description}>French Fries</Text>
-                            <Image source={require("../assets/fries.png")} style={styles.img} />
-                        </View>
-                        <View style={styles.contentBottom}>
-                            <View>
-                                <Text style={styles.price}>R20</Text>
-                                <Text style={styles.name}>Family Meal</Text>
+                    {
+                        menu.map((items, index) => (
+                            <View style={styles.box}>
+                                <View style={styles.contentTop}>
+                                    <Text style={styles.description}>{items.description}</Text>
+                                    <Image source={{uri: items.imgUrl}} style={styles.img} />
+                                </View>
+                                <View style={styles.contentBottom}>
+                                    <View>
+                                        <Text style={styles.price}>{items.price}</Text>
+                                        <Text style={styles.name}>{items.name}</Text>
+                                    </View>
+                                    <TouchableOpacity style={styles.addBtn}>
+                                        <Text style={styles.addBtnText}>ADD</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                            <TouchableOpacity style={styles.addBtn}>
-                                <Text style={styles.addBtnText}>ADD</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={styles.box}>
-                        <View style={styles.contentTop}>
-                            <Text style={styles.description}>7 Hot Wings</Text>
-                            <Image source={require("../assets/hotwings.jpg")} style={styles.img} />
-                        </View>
-                        <View style={styles.contentBottom}>
-                            <View>
-                                <Text style={styles.price}>R42</Text>
-                                <Text style={styles.name}>Full Chicken</Text>
-                            </View>
-                            <TouchableOpacity style={styles.addBtn}>
-                                <Text style={styles.addBtnText}>ADD</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={styles.box}>
-                        <View style={styles.contentTop}>
-                            <Text style={styles.description}>Full Grilled Chicken</Text>
-                            <Image source={require("../assets/fullChicken.jpg")} style={styles.img} />
-                        </View>
-                        <View style={styles.contentBottom}>
-                            <View>
-                                <Text style={styles.price}>R12</Text>
-                                <Text style={styles.name}>Family  Meal</Text>
-                            </View>
-                            <TouchableOpacity style={styles.addBtn}>
-                                <Text style={styles.addBtnText}>ADD</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={styles.box}>
-                        <View style={styles.contentTop}>
-                            <Text style={styles.description}>Bacon Salad</Text>
-                            <Image source={require("../assets/salad.jpg")} style={styles.img} />
-                        </View>
-                        <View style={styles.contentBottom}>
-                            <View>
-                                <Text style={styles.price}>R29</Text>
-                                <Text style={styles.name}>Family Meal</Text>
-                            </View>
-                            <TouchableOpacity style={styles.addBtn}>
-                                <Text style={styles.addBtnText}>ADD</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                        ))
+                    }
                 </View>
             </ScrollView>
         </SafeAreaView>

@@ -1,66 +1,68 @@
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../Config/firebase';
 
 
-export default function Bevarages() {
+export default function Baverages() {
     const navigation = useNavigation()
+    const [menu, setMenu] = useState([])
+
+
+    useEffect(() => {
+        const viewBurgers = async () => {
+
+            const viewRef = collection(db, "items");
+            const q = query(viewRef, where("category", "==", "Beverages"))
+            const querrySnapshot = await getDocs(q)
+            console.log("querrySnapshot", querrySnapshot);
+
+            if (!querrySnapshot.empty) {
+                const data = querrySnapshot.docs.map(doc => doc.data())
+                setMenu(data)
+                console.log("data", data);
+            } else {
+                console.log("No such document!");
+
+            }
+        }
+        viewBurgers()
+    }, [])
+
+
+    if (!menu) return <div>Loading...</div>;
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.productNav}>
-                <Text style={styles.navHead}>Beverage list</Text>
-                <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")}/>
+                <Text style={styles.navHead}>Sharing meal list</Text>
+                <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")} />
             </View>
             <ScrollView>
                 <View style={styles.ScrollView}>
-                    <View style={styles.box}>
-                        <View style={styles.contentTop}>
-                            <Text style={styles.description}>Chocolate Milkshake</Text>
-                            <Image source={require("../assets/milkshake1.jpg")} style={styles.img} />
-                        </View>
-                        <View style={styles.contentBottom}>
-                            <View>
-                                <Text style={styles.price}>R20</Text>
-                                <Text style={styles.name}>Best Deal</Text>
+                    {
+                        menu.map((items, index) => (
+                            <View style={styles.box}>
+                                <View style={styles.contentTop}>
+                                    <Text style={styles.description}>{items.description}</Text>
+                                    <Image source={{uri: items.imgUrl}} style={styles.img} />
+                                </View>
+                                <View style={styles.contentBottom}>
+                                    <View>
+                                        <Text style={styles.price}>{items.price}</Text>
+                                        <Text style={styles.name}>{items.name}</Text>
+                                    </View>
+                                    <TouchableOpacity style={styles.addBtn}>
+                                        <Text style={styles.addBtnText}>ADD</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                            <TouchableOpacity style={styles.addBtn}>
-                                <Text style={styles.addBtnText}>ADD</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={styles.box}>
-                        <View style={styles.contentTop}>
-                            <Text style={styles.description}>Hulk burger + Fries + 2 in-house sauces</Text>
-                            <Image source={require("../assets/liqui2.jpeg")} style={styles.img} />
-                        </View>
-                        <View style={styles.contentBottom}>
-                            <View>
-                                <Text style={styles.price}>R18</Text>
-                                <Text style={styles.name}>Best Deal</Text>
-                            </View>
-                            <TouchableOpacity style={styles.addBtn}>
-                                <Text style={styles.addBtnText}>ADD</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={styles.box}>
-                        <View style={styles.contentTop}>
-                            <Text style={styles.description}>Bacon - King burger + Salad</Text>
-                            <Image source={require("../assets/cans.jpeg")} style={styles.img} />
-                        </View>
-                        <View style={styles.contentBottom}>
-                            <View>
-                                <Text style={styles.price}>R16</Text>
-                                <Text style={styles.name}>Best Deal</Text>
-                            </View>
-                            <TouchableOpacity style={styles.addBtn}>
-                                <Text style={styles.addBtnText}>ADD</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                        ))
+                    }
                 </View>
             </ScrollView>
         </SafeAreaView>

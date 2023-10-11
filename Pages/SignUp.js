@@ -1,34 +1,68 @@
 import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { addDoc, collection } from 'firebase/firestore';
+import { auth, db } from '../Config/firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function SignUp() {
+
+export default function SignUp({setIsAuth}) {
     const navigation = useNavigation()
-  return (
-    <SafeAreaView style={styles.container}>
-    <View style={styles.loginContainer}>
-    <Text style={styles.signIn}>SignUp</Text>
-    <Image
-        source={require("../assets/login.png")}
-    />
-    <View style={styles.form}>
-        <TextInput
-            placeholder='Enter email...'
-            style={styles.textInput}
-        />
-        <TextInput
-            placeholder='Enter password...'
-            style={styles.textInput}
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
 
-        />
-    </View>
-    <TouchableOpacity style={styles.signInBtn}>
-        <Text style={styles.signInBtnText}  onPress={() => navigation.navigate("user")}>SignUp</Text>
-    </TouchableOpacity>
-    <Text style={styles.newMember}>Already have an account? <Text style={styles.span} onPress={() => navigation.navigate("SignIn")}>signIn</Text></Text>
-    </View>
-</SafeAreaView>
-  )
+
+    function register() {
+        createUserWithEmailAndPassword(auth, email, password)
+        .then(async (authenticated) => {
+     
+            if (authenticated) {
+                const user = JSON.stringify(authenticated);
+                await AsyncStorage.setItem("users", user).then(() => {
+                    console.log("saved")
+                })
+                console.log("User Successfully registered");
+                // setIsAuth(true)
+                navigation.navigate("profile")
+            }
+
+        })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+
+
+    return (
+        <SafeAreaView style={styles.container}>
+            <View style={styles.loginContainer}>
+                <Text style={styles.signIn}>SignUp</Text>
+                <Image
+                    source={require("../assets/login.png")}
+                />
+                <View style={styles.form}>
+                    <TextInput
+                        placeholder='Enter email...'
+                        style={styles.textInput}
+                        onChangeText={(event) => setEmail(event)}
+                    />
+                    <TextInput
+                        placeholder='Enter password...'
+                        style={styles.textInput}
+                        onChangeText={(event) => setPassword(event)}
+
+
+                    />
+                </View>
+                <TouchableOpacity style={styles.signInBtn} onPress={register}>
+                    <Text style={styles.signInBtnText}>SignUp</Text>
+                </TouchableOpacity>
+                <Text style={styles.newMember}>Already have an account? <Text style={styles.span} onPress={() => navigation.navigate("SignIn")}>signIn</Text></Text>
+            </View>
+        </SafeAreaView>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -39,21 +73,21 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 
-    textInput:{
+    textInput: {
         borderBottomWidth: 1,
         width: 300
     },
 
-    form:{
+    form: {
         display: "flex",
         flexDirection: "column",
         rowGap: 30
     },
 
-    loginContainer:{
+    loginContainer: {
         display: "flex",
         flexDirection: "column",
-        rowGap : 50,
+        rowGap: 50,
         alignItems: "center"
     },
 
@@ -82,11 +116,11 @@ const styles = StyleSheet.create({
 
     },
 
-    span:{
+    span: {
         color: "#fea70d"
     },
 
-    newMember:{
+    newMember: {
         fontSize: 19
     }
 

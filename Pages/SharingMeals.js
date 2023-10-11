@@ -1,37 +1,153 @@
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { addDoc, collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import { auth, db } from '../Config/firebase';
+import { Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 export default function SharingMeals() {
     const navigation = useNavigation()
+    const [menu, setMenu] = useState([])
+
+
+    useEffect(() => {
+        const viewBurgers = async () => {
+
+            const viewRef = collection(db, "items");
+            const q = query(viewRef, where("category", "==", "Sharing Meals"))
+            const querrySnapshot = await getDocs(q)
+            console.log("querrySnapshot", querrySnapshot);
+
+            if (!querrySnapshot.empty) {
+                const data = querrySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }))
+                setMenu(data)
+                console.log("data", data);
+            } else {
+                console.log("No such document!");
+
+            }
+        }
+        viewBurgers()
+    }, [])
+
+
+    async function addToCart(id) {
+        console.log("check itemID:", id);
+        //get item id and user id
+        // const userId = auth.currentUser.uid
+        const userId = await getUserAsync();
+
+        // console.log("userDetails",userId);
+
+        if (userId !== null) {
+            try {
+                var pendingOrders = null
+                const snapshot = await getDocs(collection(db, "carts"));
+                if (snapshot.docs.length > 0) {
+                    console.log("Something");
+                    var pOrders = [];
+                    snapshot.forEach((doc) => {
+                        pOrders.push(doc.data())
+                    })
+
+                    const myItem = {
+                        itemId: id,
+                    }
+                    pOrders[0].item.push(myItem)
+                    console.log("line64", pOrders);
+                    const docRef = await setDoc(doc(db, "carts", userId), pOrders[0])
+                } else {
+                    console.log("Nothing");
+                    const myItem = {
+                        item: [{
+                            itemId: id,
+
+                        }]
+                    }
+                    pendingOrders = myItem;
+                    await setDoc(doc(db, "carts", userId), pendingOrders);
+                }
+                // console.log(pendingOrders[0].item);
+
+                // const myItem = {
+                //     itemId: id,
+
+                // }
+
+                // pendingOrders[0].item.push(myItem)
+                // console.log("line64", pendingOrders);
+
+
+                // const docRef = await setDoc(doc(db, "carts", userId), pendingOrders[0])
+
+
+                // const pendingOrders = []
+                // const snapshot = await getDocs(collection(db, "carts"));
+                // snapshot.forEach((doc) => {
+                //     pendingOrders.push(doc.data())
+                // })
+                // console.log(pendingOrders);
+                Alert.alert("Successfully added to cart");
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            console.log("No user");
+        }
+
+    }
+
+    async function getUserAsync() {
+        const signedInUser = await AsyncStorage.getItem("user");
+        const results = signedInUser !== null ? JSON.parse(signedInUser) : null;
+
+        console.log("see user object", results._tokenResponse.localId);
+        // console.log("see user object",results);
+
+        return signedInUser !== null ? results._tokenResponse.localId : null
+    }
+
+
+
+    if (!menu) return <Text>Loading...</Text>;
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.productNav}>
                 <Text style={styles.navHead}>Sharing meal list</Text>
-                <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"}  onPress={() => navigation.navigate("home")}/>
+                <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")} />
             </View>
             <ScrollView>
                 <View style={styles.ScrollView}>
-                    <View style={styles.box}>
-                        <View style={styles.contentTop}>
-                            <Text style={styles.description}>3 Bacon - King burgers</Text>
-                            <Image source={require("../assets/3burgers.jpg")} style={styles.img} />
-                        </View>
-                        <View style={styles.contentBottom}>
-                            <View>
-                                <Text style={styles.price}>R159</Text>
-                                <Text style={styles.name}>Family Meal</Text>
+                    {
+                        menu.map((items, index) => (
+                            <View style={styles.box} key={index}>
+                                <View style={styles.contentTop}>
+                                    <Text style={styles.description}>{items.description}</Text>
+                                    <Image source={{ uri: items.imgUrl }} style={styles.img} />
+                                </View>
+                                <View style={styles.contentBottom}>
+                                    <View>
+                                        <Text style={styles.price}>{items.price}</Text>
+                                        <Text style={styles.name}>{items.name}</Text>
+                                    </View>
+                                    <TouchableOpacity style={styles.addBtn} onPress={() => addToCart(items.id)}>
+                                        <Text style={styles.addBtnText}>ADD</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                            <TouchableOpacity style={styles.addBtn}>
-                                <Text style={styles.addBtnText}>ADD</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={styles.box}>
+                        ))
+                    }
+                    {/* <View style={styles.box}>
                         <View style={styles.contentTop}>
                             <Text style={styles.description}>Hulk burger + Fries + 2 in-house sauces</Text>
                             <Image source={require("../assets/family1.jpeg")} style={styles.img} />
@@ -75,7 +191,7 @@ export default function SharingMeals() {
                                 <Text style={styles.addBtnText}>ADD</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
+                    </View> */}
                 </View>
             </ScrollView>
         </SafeAreaView>

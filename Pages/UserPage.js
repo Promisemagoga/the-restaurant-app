@@ -1,32 +1,78 @@
 import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import BottomNav from '../Components/BottomNav'
+import { collection, getDoc, getDocs, query, where } from 'firebase/firestore'
+import { auth, db } from '../Config/firebase'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 export default function UserPage() {
+    const [user, setUser] = useState()
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const emailA = await getUserAsync();
+            if (emailA !== null) {
+                const userRef = collection(db, "userData");
+                const q = query(userRef, where("userEmail", "==", emailA))
+                const querrySnapshot = await getDocs(q)
+
+                if (querrySnapshot.empty) {
+                    console.log("Info not found");
+                } else {
+                    querrySnapshot.forEach((doc) => {
+                        setUser(doc.data());
+                        console.log("see data:", doc.data());
+                    })
+                }
+            } else {
+                console.log("No user");
+            }
+        }
+        fetchUser()
+
+    }, [])
+
+    async function getUserAsync() {
+        const signedInUser = await AsyncStorage.getItem("user");
+        const results = signedInUser !== null ? JSON.parse(signedInUser) : null;
+
+        console.log(results._tokenResponse.email);
+        return signedInUser !== null ? results._tokenResponse.email : null
+    }
+
+    // if (!user) return (
+    //     <View style={styles.container}>
+    //         <Text>Loading</Text>
+    //     </View>
+    // )
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.productNav}>
-                <Text style={styles.navHead}>Profile</Text>
+                <Text style={styles.navHead}>User Details</Text>
                 <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} />
             </View>
             <ScrollView style={styles.ScrollView}>
-                <View style={styles.profileTop}>
-                    <Image source={require("../assets/Me.jpg")} style={styles.profilePic} />
-                    <View style={styles.topContent}>
-                        <Text style={{ fontSize: 23, fontWeight: "bold" }}>Promise Magoga</Text>
-                        <View style={styles.detailSection}>
-                            <MaterialCommunityIcons name='email' size={25} color={"#fea70d"} />
-                            <Text style={{ fontSize: 16 }}>promise@gmail.com</Text>
+                {user && (
+                    <View style={styles.profileTop}>
+                        <Image source={require("../assets/Me.jpg")} style={styles.profilePic} />
+                        <View style={styles.topContent}>
+                            <Text style={{ fontSize: 23, fontWeight: "bold" }}>{user.name} {user.surname}</Text>
+                            <View style={styles.detailSection}>
+                                <MaterialCommunityIcons name='email' size={25} color={"#fea70d"} />
+                                <Text style={{ fontSize: 16 }}>{user.userEmail}</Text>
+                            </View>
+                            <View style={styles.detailSection}>
+                                <MaterialCommunityIcons name='phone' size={25} color={"#fea70d"} />
+                                <Text style={{ fontSize: 16 }}>{user.phoneNumber}</Text>
+                            </View>
                         </View>
-                        <View style={styles.detailSection}>
-                            <MaterialCommunityIcons name='phone' size={25} color={"#fea70d"} />
-                            <Text style={{ fontSize: 16 }}>012345678</Text>
-                        </View>
+                        <MaterialCommunityIcons name='square-edit-outline' size={30} color={"#fea70d"} />
                     </View>
-                    <MaterialCommunityIcons name='square-edit-outline' size={30} color={"#fea70d"} />
-                </View>
+                )}
                 <View style={styles.box}>
                     <View style={styles.OrdersDetail}>
                         <MaterialCommunityIcons name='sticker-check-outline' size={30} color={"#fff"} style={styles.profileIcons} />

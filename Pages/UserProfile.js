@@ -1,10 +1,46 @@
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native'
 import { TextInput } from 'react-native';
 import { TouchableOpacity } from 'react-native';
+import { addDoc, collection } from 'firebase/firestore';
+import { auth, db } from '../Config/firebase';
+import { useNavigation } from '@react-navigation/native';
 
-export default function UserProfile() {
+
+export default function UserProfile({setIsAuth}) {
+    const [name, setName] = useState("")
+    const [surname, setSurname] = useState("")
+    // const [email, setEmail] = useState("")
+    const [address, setAdress] = useState("")
+    const [phoneNumber, setPhoneNumber] = useState("")
+    const [cardName, setCardName] = useState("")
+    const [cardNumber, setCardNumber] = useState("")
+    const [expiryDate, setExpiryDate] = useState("")
+    const [cvv, setCvv] = useState("")
+    const navigation = useNavigation()
+
+    async function register() {
+        try {
+            const docRef = await addDoc(collection(db, "userData"), {
+                name: name,
+                surname: surname,
+                // email: email,
+                address: address,
+                userEmail: auth.currentUser.email,
+                phoneNumber: phoneNumber
+
+            })
+            alert("Added Successfuly");
+            // navigation.navigate("home")
+            setIsAuth(true)
+            
+
+        } catch (error) {
+console.log(error);
+        }
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scroll}>
@@ -16,24 +52,30 @@ export default function UserProfile() {
                         <TextInput
                             placeholder='Enter name...'
                             style={styles.textInput}
+                            onChangeText={(event) => setName(event)}
                         />
                         <TextInput
                             placeholder='Enter surname...'
                             style={styles.textInput}
+                            onChangeText={(event) => setSurname(event)}
                         />
-                        <TextInput
+                        {/* <TextInput
                             placeholder='Enter email...'
                             style={styles.textInput}
+                            onChangeText={(event) => setEmail(event)}
 
-                        />
+                        /> */}
                         <TextInput
                             placeholder='Enter home address...'
                             style={styles.textInput}
+                            onChangeText={(event) => setAdress(event)}
 
                         />
                         <TextInput
+                                    keyboardType='numeric'
                             placeholder='Enter contact number...'
                             style={styles.textInput}
+                            onChangeText={(event) => setPhoneNumber(event)}
 
                         />
                         <View>
@@ -48,6 +90,7 @@ export default function UserProfile() {
                                     keyboardType='numeric'
                                     placeholder='Enter card number...'
                                     style={styles.textInput}
+                                  
 
                                 />
                                 <View style={styles.dateCont}>
@@ -55,19 +98,19 @@ export default function UserProfile() {
                                         keyboardType='numeric'
                                         placeholder='MM/YYY'
                                         style={styles.dateInput}
+                                      
 
                                     />
                                     <TextInput
                                         keyboardType='numeric'
                                         placeholder='000'
                                         style={styles.dateInput}
-
                                     />
                                 </View>
                             </View>
                         </View>
                     </View>
-                    <TouchableOpacity style={styles.signInBtn}>
+                    <TouchableOpacity style={styles.signInBtn} onPress={register}>
                         <Text style={styles.signInBtnText}>Save</Text>
                     </TouchableOpacity>
                 </View>
@@ -87,7 +130,7 @@ const styles = StyleSheet.create({
     },
 
     scroll: {
-        width:" 100%"
+        width: " 100%"
     },
 
     textInput: {
