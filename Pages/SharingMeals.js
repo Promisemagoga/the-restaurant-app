@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { addDoc, collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { auth, db } from '../Config/firebase';
 import { Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AddToCartBtn from '../Components/AddToCartBtn';
 
 
 
@@ -40,83 +40,7 @@ export default function SharingMeals() {
     }, [])
 
 
-    async function addToCart(id) {
-        console.log("check itemID:", id);
-        //get item id and user id
-        // const userId = auth.currentUser.uid
-        const userId = await getUserAsync();
-
-        // console.log("userDetails",userId);
-
-        if (userId !== null) {
-            try {
-                var pendingOrders = null
-                const snapshot = await getDocs(collection(db, "carts"));
-                if (snapshot.docs.length > 0) {
-                    console.log("Something");
-                    var pOrders = [];
-                    snapshot.forEach((doc) => {
-                        pOrders.push(doc.data())
-                    })
-
-                    const myItem = {
-                        itemId: id,
-                    }
-                    pOrders[0].item.push(myItem)
-                    console.log("line64", pOrders);
-                    const docRef = await setDoc(doc(db, "carts", userId), pOrders[0])
-                } else {
-                    console.log("Nothing");
-                    const myItem = {
-                        item: [{
-                            itemId: id,
-
-                        }]
-                    }
-                    pendingOrders = myItem;
-                    await setDoc(doc(db, "carts", userId), pendingOrders);
-                }
-                // console.log(pendingOrders[0].item);
-
-                // const myItem = {
-                //     itemId: id,
-
-                // }
-
-                // pendingOrders[0].item.push(myItem)
-                // console.log("line64", pendingOrders);
-
-
-                // const docRef = await setDoc(doc(db, "carts", userId), pendingOrders[0])
-
-
-                // const pendingOrders = []
-                // const snapshot = await getDocs(collection(db, "carts"));
-                // snapshot.forEach((doc) => {
-                //     pendingOrders.push(doc.data())
-                // })
-                // console.log(pendingOrders);
-                Alert.alert("Successfully added to cart");
-            } catch (error) {
-                console.log(error);
-            }
-        } else {
-            console.log("No user");
-        }
-
-    }
-
-    async function getUserAsync() {
-        const signedInUser = await AsyncStorage.getItem("user");
-        const results = signedInUser !== null ? JSON.parse(signedInUser) : null;
-
-        console.log("see user object", results._tokenResponse.localId);
-        // console.log("see user object",results);
-
-        return signedInUser !== null ? results._tokenResponse.localId : null
-    }
-
-
+   
 
     if (!menu) return <Text>Loading...</Text>;
 
@@ -137,61 +61,15 @@ export default function SharingMeals() {
                                 </View>
                                 <View style={styles.contentBottom}>
                                     <View>
-                                        <Text style={styles.price}>{items.price}</Text>
+                                        <Text style={styles.price}>R{items.price}</Text>
                                         <Text style={styles.name}>{items.name}</Text>
                                     </View>
-                                    <TouchableOpacity style={styles.addBtn} onPress={() => addToCart(items.id)}>
-                                        <Text style={styles.addBtnText}>ADD</Text>
-                                    </TouchableOpacity>
+                                 <AddToCartBtn idItem={items.id}/>
                                 </View>
                             </View>
                         ))
                     }
-                    {/* <View style={styles.box}>
-                        <View style={styles.contentTop}>
-                            <Text style={styles.description}>Hulk burger + Fries + 2 in-house sauces</Text>
-                            <Image source={require("../assets/family1.jpeg")} style={styles.img} />
-                        </View>
-                        <View style={styles.contentBottom}>
-                            <View>
-                                <Text style={styles.price}>R210</Text>
-                                <Text style={styles.name}>Family Meal</Text>
-                            </View>
-                            <TouchableOpacity style={styles.addBtn}>
-                                <Text style={styles.addBtnText}>ADD</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={styles.box}>
-                        <View style={styles.contentTop}>
-                            <Text style={styles.description}>6 piece chicken + 2 Fries + 2 salads + 2 mini loafs</Text>
-                            <Image source={require("../assets/family3.jpeg")} style={styles.img} />
-                        </View>
-                        <View style={styles.contentBottom}>
-                            <View>
-                                <Text style={styles.price}>R137</Text>
-                                <Text style={styles.name}>Family  Meal</Text>
-                            </View>
-                            <TouchableOpacity style={styles.addBtn}>
-                                <Text style={styles.addBtnText}>ADD</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={styles.box}>
-                        <View style={styles.contentTop}>
-                            <Text style={styles.description}>12 Hotwings + 4 Sliders + 2 fries</Text>
-                            <Image source={require("../assets/family4.jpg")} style={styles.img} />
-                        </View>
-                        <View style={styles.contentBottom}>
-                            <View>
-                                <Text style={styles.price}>R138</Text>
-                                <Text style={styles.name}>Family Meal</Text>
-                            </View>
-                            <TouchableOpacity style={styles.addBtn}>
-                                <Text style={styles.addBtnText}>ADD</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View> */}
+             
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -270,20 +148,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
 
-    addBtn: {
-        borderWidth: 1,
-        width: 150,
-        height: 35,
-        borderRadius: 10,
-        borderColor: "#fea70d"
-    },
-
-    addBtnText: {
-        textAlign: "center",
-        marginTop: "auto",
-        marginBottom: "auto",
-        color: "#fea70d"
-    },
+   
 
     price: {
         color: "#009687",

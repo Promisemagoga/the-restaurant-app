@@ -1,4 +1,4 @@
-import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -6,6 +6,7 @@ import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../Config/firebase';
+import AddToCartBtn from '../Components/AddToCartBtn';
 
 
 export default function Baverages() {
@@ -22,7 +23,10 @@ export default function Baverages() {
             console.log("querrySnapshot", querrySnapshot);
 
             if (!querrySnapshot.empty) {
-                const data = querrySnapshot.docs.map(doc => doc.data())
+                const data = querrySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }))
                 setMenu(data)
                 console.log("data", data);
             } else {
@@ -42,29 +46,25 @@ export default function Baverages() {
                 <Text style={styles.navHead}>Sharing meal list</Text>
                 <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")} />
             </View>
-            <ScrollView>
-                <View style={styles.ScrollView}>
-                    {
-                        menu.map((items, index) => (
-                            <View style={styles.box}>
-                                <View style={styles.contentTop}>
-                                    <Text style={styles.description}>{items.description}</Text>
-                                    <Image source={{uri: items.imgUrl}} style={styles.img} />
-                                </View>
-                                <View style={styles.contentBottom}>
-                                    <View>
-                                        <Text style={styles.price}>{items.price}</Text>
-                                        <Text style={styles.name}>{items.name}</Text>
-                                    </View>
-                                    <TouchableOpacity style={styles.addBtn}>
-                                        <Text style={styles.addBtnText}>ADD</Text>
-                                    </TouchableOpacity>
-                                </View>
+            <FlatList
+                data={menu}
+                renderItem={({ item }) => (
+                    <View style={styles.box}>
+                        <View style={styles.contentTop}>
+                            <Text style={styles.description}>{item.description}</Text>
+                            <Image source={{ uri: item.imgUrl }} style={styles.img} />
+                        </View>
+                        <View style={styles.contentBottom}>
+                            <View>
+                                <Text style={styles.price}>R{item.price}</Text>
+                                <Text style={styles.name}>{item.name}</Text>
                             </View>
-                        ))
-                    }
-                </View>
-            </ScrollView>
+                            <AddToCartBtn idItem={item.id} />
+                        </View>
+                    </View>
+                )}
+                keyExtractor={(item, index) => index.toString()}
+            />
         </SafeAreaView>
     );
 }

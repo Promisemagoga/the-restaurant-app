@@ -1,40 +1,40 @@
-import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { Alert, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ScrollView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { db } from '../Config/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Cart() {
     const [listCart, setListCart] = useState([])
     const navigation = useNavigation()
+    const [totalPrice, setTotalPrice] = useState(0)
 
     useEffect(() => {
         const fetchCartItems = async () => {
             setListCart([])
             const userId = await getUserAsync();
-            console.log(userId);
             const itemRef = doc(collection(db, "carts"), userId);
-            // const q = query(itemRef, where("item", "==", "itemId"))
             const querrySnapshot = await getDoc(itemRef);
 
             if (!querrySnapshot.exists()) {
                 console.log("Info not found");
             } else {
-                var cartItems = []
-                // console.log("see data:", querrySnapshot.data());
-                await querrySnapshot.data().item.forEach(async (doc) => {
+                var cartItems = [];
+                await Promise.all(querrySnapshot.data().item.map(async (doc) => {
                     var item = await getItemFromFirestor(doc.itemId);
-                    console.log("item", item);
-                    cartItems.push(item);
-                    setListCart((prevArray) => [...prevArray, item])
-                })
-                // if (cartItems.length > 0) {
-                // console.log("see dat1a:", cartItems);
-                // }
+                    cartItems.push({ ...item, itemQuantity: 1 });
+                }));
+                let finalPrice = 0
+                cartItems.forEach(cart => {
+                    finalPrice += parseInt(cart.price)
+                });
+                // console.log(finalPrice);
+                setTotalPrice(finalPrice)
+                setListCart(cartItems)
             }
         }
         fetchCartItems()
@@ -45,23 +45,71 @@ export default function Cart() {
         const results = signedInUser !== null ? JSON.parse(signedInUser) : null;
 
         console.log("see user object", results._tokenResponse.localId);
-        // console.log("see user object",results);
         return signedInUser !== null ? results._tokenResponse.localId : null
     }
 
     async function getItemFromFirestor(id) {
         const itemRef = doc(collection(db, "items"), id);
-        // const q = query(itemRef, where("item", "==", "itemId"))
         const querrySnapshot = await getDoc(itemRef);
         var item = null
         if (querrySnapshot.exists()) {
-            item = querrySnapshot.data();
+            // item = querrySnapshot.data();
+            item = {
+                id: querrySnapshot.id,
+                ...querrySnapshot.data(),
+            }
         }
-        // console.log(item);
         return item
     }
 
-    if (!listCart) { return <Text>Loadin...</Text> }
+    const deleteFunc = async (id) => {
+        const userId = await getUserAsync();
+        const itemRef = doc(collection(db, "carts"), userId);
+        const itemSnapshot = await getDoc(itemRef);
+
+        if (itemSnapshot.exists()) {
+            const updatedItems = itemSnapshot.data().item.filter((item) => item.itemId !== id);
+            await updateDoc(itemRef, { item: updatedItems });
+            Alert.alert('Item successfully deleted!');
+            setListCart(updatedItems)
+        } else {
+            console.log('Cart not found');
+        }
+    }
+
+
+    const increaseQuantity = (data, index) => {
+        const items = [...listCart]
+        items[index].itemQuantity += 1
+        setListCart(items)
+
+        let finalPrice = totalPrice
+        finalPrice += parseInt(data.price)
+        setTotalPrice(finalPrice)
+    }
+
+
+    const decreaseQuantity = (data, index) => {
+        const items = [...listCart]
+        let finalPrice = totalPrice
+
+        if (items[index].itemQuantity <= 1) {
+            items[index].itemQuantity = 1
+        } else {
+            items[index].itemQuantity -= 1
+            finalPrice -= parseInt(data.price)
+        }
+        setListCart(items)
+        setTotalPrice(finalPrice)
+
+    }
+
+
+
+
+    if (listCart.length === 0) {
+        return null;
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -71,48 +119,47 @@ export default function Cart() {
             </View>
             <ScrollView>
                 {listCart.map((data, index) => (
-                    <View style={styles.ScrollView}>
+                    <View style={styles.ScrollView} key={index}>
                         <View style={styles.box}>
                             <View style={styles.contentTop}>
                                 <Text style={styles.description}>{data.description}</Text>
                                 <Image source={{ uri: data.imgUrl }} style={styles.img} />
                             </View>
                             <View>
-                                <Text style={styles.price}>{data.price}</Text>
+                                <Text style={styles.price}>R{data.price}</Text>
                             </View>
                             <View style={styles.contentBottom}>
-                                <MaterialCommunityIcons name='delete' size={25} color={"#2F2F2F"} style={styles.remove} />
+                                <MaterialCommunityIcons name='delete' size={25} color={"#2F2F2F"} style={styles.remove} onPress={() => deleteFunc(data.id)} />
                                 <View style={styles.quantity}>
-                                    <MaterialCommunityIcons name='minus-circle' size={30} color={"#fea70d"} onPress={() => navigation.navigate("home")} />
-                                    <Text style={{ fontSize: 20 }}>2</Text>
-                                    <MaterialCommunityIcons name='plus-circle' size={30} color={"#fea70d"} />
+                                    <MaterialCommunityIcons name='minus-circle' size={30} color={"#fea70d"} onPress={() => decreaseQuantity(data, index)} />
+                                    <Text style={{ fontSize: 20 }}>{data.itemQuantity}</Text>
+                                    <MaterialCommunityIcons name='plus-circle' size={30} color={"#fea70d"} onPress={() => increaseQuantity(data, index)} />
                                 </View>
                             </View>
                         </View>
                     </View>
                 ))}
-                {console.log("listCart", listCart)}
+                <View style={styles.checkoutContainer}>
+                    <Text style={styles.heading}>Bill Details</Text>
+                    <View style={styles.checkOutContent}>
+                        <Text>Total</Text>
+                        <Text>R{totalPrice}</Text>
+                    </View>
+                    <View style={styles.checkOutContent}>
+                        <Text>Delivery Charge</Text>
+                        <Text>R0</Text>
+                    </View>
+                    <View style={styles.hr}></View>
+                    <TouchableOpacity style={styles.displayButton}>
+                        <Text>{listCart.length} |</Text>
+                        <View style={styles.checkOut}>
+                            <Text style={styles.text}>CheckOut</Text>
+                            <MaterialCommunityIcons name='greater-than' size={30} color={"#fff"} />
+                        </View>
+                    </TouchableOpacity>
+                </View>
 
             </ScrollView>
-            <View style={styles.checkoutContainer}>
-                <Text style={styles.heading}>Bill Details</Text>
-                <View style={styles.checkOutContent}>
-                    <Text>Subtotal</Text>
-                    <Text>R500</Text>
-                </View>
-                <View style={styles.checkOutContent}>
-                    <Text>Delivery Charge</Text>
-                    <Text>R0</Text>
-                </View>
-                <View style={styles.hr}></View>
-                <TouchableOpacity style={styles.displayButton}>
-                    <Text>3 Items |</Text>
-                    <View style={styles.checkOut}>
-                        <Text style={styles.text}>CheckOut</Text>
-                        <MaterialCommunityIcons name='greater-than' size={30} color={"#fff"} />
-                    </View>
-                </TouchableOpacity>
-            </View>
         </SafeAreaView>
     );
 }

@@ -6,6 +6,7 @@ import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../Config/firebase';
+import AddToCartBtn from '../Components/AddToCartBtn';
 
 
 export default function KidsMeals() {
@@ -22,7 +23,10 @@ export default function KidsMeals() {
             console.log("querrySnapshot", querrySnapshot);
 
             if (!querrySnapshot.empty) {
-                const data = querrySnapshot.docs.map(doc => doc.data())
+                const data = querrySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }))
                 setMenu(data)
                 console.log("data", data);
             } else {
@@ -53,12 +57,10 @@ export default function KidsMeals() {
                                 </View>
                                 <View style={styles.contentBottom}>
                                     <View>
-                                        <Text style={styles.price}>{items.price}</Text>
+                                        <Text style={styles.price}>R{items.price}</Text>
                                         <Text style={styles.name}>{items.name}</Text>
                                     </View>
-                                    <TouchableOpacity style={styles.addBtn}>
-                                        <Text style={styles.addBtnText}>ADD</Text>
-                                    </TouchableOpacity>
+                                 <AddToCartBtn idItem={items.id}/>
                                 </View>
                             </View>
                         ))
