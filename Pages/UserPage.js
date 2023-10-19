@@ -5,11 +5,15 @@ import BottomNav from '../Components/BottomNav'
 import { collection, getDoc, getDocs, query, where } from 'firebase/firestore'
 import { auth, db } from '../Config/firebase'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import EditProfileModal from './EditProfileModal'
+import { ImageBackground } from 'react-native'
 
 
 
 export default function UserPage() {
-    const [user, setUser] = useState()
+    const [user, setUser] = useState([])
+    const [openModal, setOpenModal] = useState(false)
+    const [updateUserInfo, setUpdateUserInfo] = useState("")
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -22,10 +26,16 @@ export default function UserPage() {
                 if (querrySnapshot.empty) {
                     console.log("Info not found");
                 } else {
+                    const data = [];
                     querrySnapshot.forEach((doc) => {
-                        setUser(doc.data());
-                        console.log("see data:", doc.data());
-                    })
+                        data.push({
+                            id: doc.id,
+                            ...doc.data(),
+                        });
+                    });
+
+                    setUser(data);
+                    console.log("see data:", data);
                 }
             } else {
                 console.log("No user");
@@ -43,6 +53,12 @@ export default function UserPage() {
         return signedInUser !== null ? results._tokenResponse.email : null
     }
 
+    function modal(userDetails) {
+        console.log("see your user details:", userDetails);
+        setUpdateUserInfo(userDetails)
+        setOpenModal(true)
+    }
+
     // if (!user) return (
     //     <View style={styles.container}>
     //         <Text>Loading</Text>
@@ -50,102 +66,104 @@ export default function UserPage() {
     // )
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.productNav}>
-                <Text style={styles.navHead}>User Details</Text>
-                <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} />
-            </View>
-            <ScrollView style={styles.ScrollView}>
-                {user && (
-                    <View style={styles.profileTop}>
-                        <Image source={require("../assets/Me.jpg")} style={styles.profilePic} />
-                        <View style={styles.topContent}>
-                            <Text style={{ fontSize: 23, fontWeight: "bold" }}>{user.name} {user.surname}</Text>
-                            <View style={styles.detailSection}>
-                                <MaterialCommunityIcons name='email' size={25} color={"#fea70d"} />
-                                <Text style={{ fontSize: 16 }}>{user.userEmail}</Text>
+        <>
+            <SafeAreaView style={styles.container}>
+                <ScrollView style={styles.ScrollView}>
+                    <ImageBackground source={require('../assets/french-fries.jpg')} style={styles.banner}>
+                    </ImageBackground>
+                    {user.map((user) => (
+                        <View style={styles.profileTop}>
+                            <Image source={require("../assets/Me.jpg")} style={styles.profilePic} />
+                            <View style={styles.topContent}>
+                                <Text style={{ fontSize: 23, fontWeight: "bold" }}>{user.name} {user.surname}</Text>
+                                <View style={styles.detailSection}>
+                                    <MaterialCommunityIcons name='email' size={25} color={"#fea70d"} />
+                                    <Text style={{ fontSize: 16 }}>{user.userEmail}</Text>
+                                </View>
+                                <View style={styles.detailSection}>
+                                    <MaterialCommunityIcons name='phone' size={25} color={"#fea70d"} />
+                                    <Text style={{ fontSize: 16 }}>{user.phoneNumber}</Text>
+                                </View>
                             </View>
-                            <View style={styles.detailSection}>
-                                <MaterialCommunityIcons name='phone' size={25} color={"#fea70d"} />
-                                <Text style={{ fontSize: 16 }}>{user.phoneNumber}</Text>
-                            </View>
+                            <MaterialCommunityIcons name='square-edit-outline' size={30} color={"#fea70d"} onPress={() => modal(user)} />
                         </View>
-                        <MaterialCommunityIcons name='square-edit-outline' size={30} color={"#fea70d"} />
-                    </View>
-                )}
-                <View style={styles.box}>
-                    <View style={styles.OrdersDetail}>
-                        <MaterialCommunityIcons name='sticker-check-outline' size={30} color={"#fff"} style={styles.profileIcons} />
-                        <Text>My Order</Text>
-                    </View>
-                    <View style={styles.OrdersDetail}>
-                        <MaterialCommunityIcons name='heart' size={30} color={"#fff"} style={styles.profileIcons} />
-                        <Text>My Favourites</Text>
-                    </View>
-                    <View style={styles.OrdersDetail}>
-                        <MaterialCommunityIcons name='clipboard-arrow-left' size={30} color={"#fff"} style={styles.profileIcons} />
-                        <Text>My Order</Text>
-                    </View>
-                </View>
-                <View style={styles.profileBottom}>
-                    <View style={styles.detailbottomContSection}>
-                        <MaterialCommunityIcons name='trophy-award' size={45} color={"#7D7463"} />
-                        <View>
-                            <Text style={styles.heading}>Rewards</Text>
-                            <Text style={styles.text}>Get Exciting Rewards</Text>
+                    ))}
+                    <View style={styles.box}>
+                        <View style={styles.OrdersDetail}>
+                            <MaterialCommunityIcons name='sticker-check-outline' size={30} color={"#fff"} style={styles.profileIcons} />
+                            <Text>My Order</Text>
+                        </View>
+                        <View style={styles.OrdersDetail}>
+                            <MaterialCommunityIcons name='heart' size={30} color={"#fff"} style={styles.profileIcons} />
+                            <Text>My Favourites</Text>
+                        </View>
+                        <View style={styles.OrdersDetail}>
+                            <MaterialCommunityIcons name='clipboard-arrow-left' size={30} color={"#fff"} style={styles.profileIcons} />
+                            <Text>My Order</Text>
                         </View>
                     </View>
-                    <MaterialCommunityIcons name='greater-than' size={25} style={styles.heading} />
-                </View>
-                <View style={styles.horizontalLine} />
+                    <Image source={require("../assets/card.webp")} style={styles.card}/>
+                    {/* <View style={styles.profileBottom}>
+                        <View style={styles.detailbottomContSection}>
+                            <MaterialCommunityIcons name='trophy-award' size={45} color={"#7D7463"} />
+                            <View>
+                                <Text style={styles.heading}>Rewards</Text>
+                                <Text style={styles.text}>Get Exciting Rewards</Text>
+                            </View>
+                        </View>
+                        <MaterialCommunityIcons name='greater-than' size={25} style={styles.heading} />
+                    </View>
+                    <View style={styles.horizontalLine} />
 
-                <View style={styles.profileBottom}>
-                    <View style={styles.detailbottomContSection}>
-                        <MaterialCommunityIcons name='sticker-check-outline' size={45} color={"#7D7463"} />
-                        <View>
-                            <Text style={styles.heading}>Orders</Text>
-                            <Text style={styles.text}>Get Exciting Rewards</Text>
+                    <View style={styles.profileBottom}>
+                        <View style={styles.detailbottomContSection}>
+                            <MaterialCommunityIcons name='sticker-check-outline' size={45} color={"#7D7463"} />
+                            <View>
+                                <Text style={styles.heading}>Orders</Text>
+                                <Text style={styles.text}>Get Exciting Rewards</Text>
+                            </View>
                         </View>
+                        <MaterialCommunityIcons name='greater-than' size={25} style={styles.heading} />
                     </View>
-                    <MaterialCommunityIcons name='greater-than' size={25} style={styles.heading} />
-                </View>
-                <View style={styles.horizontalLine} />
-                <View style={styles.profileBottom}>
-                    <View style={styles.detailbottomContSection}>
-                        <MaterialCommunityIcons name='map-marker' size={45} color={"#7D7463"} />
-                        <View>
-                            <Text style={styles.heading}>Address</Text>
-                            <Text style={styles.text}>Get Exciting Rewards</Text>
+                    <View style={styles.horizontalLine} />
+                    <View style={styles.profileBottom}>
+                        <View style={styles.detailbottomContSection}>
+                            <MaterialCommunityIcons name='map-marker' size={45} color={"#7D7463"} />
+                            <View>
+                                <Text style={styles.heading}>Address</Text>
+                                <Text style={styles.text}>Get Exciting Rewards</Text>
+                            </View>
                         </View>
+                        <MaterialCommunityIcons name='greater-than' size={25} style={styles.heading} />
                     </View>
-                    <MaterialCommunityIcons name='greater-than' size={25} style={styles.heading} />
-                </View>
-                <View style={styles.horizontalLine} />
-                <View style={styles.profileBottom}>
-                    <View style={styles.detailbottomContSection}>
-                        <MaterialCommunityIcons name='wallet' size={45} color={"#7D7463"} />
-                        <View>
-                            <Text style={styles.heading}>Wallet</Text>
-                            <Text style={styles.text}>Get Exciting Rewards</Text>
+                    <View style={styles.horizontalLine} />
+                    <View style={styles.profileBottom}>
+                        <View style={styles.detailbottomContSection}>
+                            <MaterialCommunityIcons name='wallet' size={45} color={"#7D7463"} />
+                            <View>
+                                <Text style={styles.heading}>Wallet</Text>
+                                <Text style={styles.text}>Get Exciting Rewards</Text>
+                            </View>
                         </View>
+                        <MaterialCommunityIcons name='greater-than' size={25} style={styles.heading} />
                     </View>
-                    <MaterialCommunityIcons name='greater-than' size={25} style={styles.heading} />
-                </View>
-                <View style={styles.horizontalLine} />
-                <View style={styles.profileBottom}>
-                    <View style={styles.detailbottomContSection}>
-                        <MaterialCommunityIcons name='bell' size={45} color={"#7D7463"} />
-                        <View>
-                            <Text style={styles.heading}>Notification</Text>
-                            <Text style={styles.text}>Get Exciting Rewards</Text>
+                    <View style={styles.horizontalLine} />
+                    <View style={styles.profileBottom}>
+                        <View style={styles.detailbottomContSection}>
+                            <MaterialCommunityIcons name='bell' size={45} color={"#7D7463"} />
+                            <View>
+                                <Text style={styles.heading}>Notification</Text>
+                                <Text style={styles.text}>Get Exciting Rewards</Text>
+                            </View>
                         </View>
+                        <MaterialCommunityIcons name='greater-than' size={25} style={styles.heading} />
                     </View>
-                    <MaterialCommunityIcons name='greater-than' size={25} style={styles.heading} />
-                </View>
-                <View style={styles.horizontalLine} />
-            </ScrollView>
-            <BottomNav />
-        </SafeAreaView>
+                    <View style={styles.horizontalLine} /> */}
+                </ScrollView>
+                <BottomNav />
+            </SafeAreaView>
+            {openModal && <View style={styles.addMod}><EditProfileModal setOpenModal={setOpenModal} updateUserInfo={updateUserInfo} /></View>}
+        </>
     )
 }
 
@@ -156,16 +174,19 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFFFF"
 
     },
-    productNav: {
-        display: "flex",
+
+    banner: {
         width: "100%",
-        height: 80,
+        height: 150,
+    },
+    productNav: {
+        width: "100%",
+
         flexDirection: "row-reverse",
         backgroundColor: "#ffffff",
         alignItems: "center",
         justifyContent: "flex-end",
-        padding: 20,
-        marginBottom: 50
+
     },
     navHead: {
         fontSize: 20,
@@ -176,7 +197,10 @@ const styles = StyleSheet.create({
     profilePic: {
         width: 100,
         height: 100,
-        borderRadius: 100
+        borderRadius: 100,
+        zIndex: 10,
+        marginTop: -30,
+        marginRight: 20,
     },
 
     profileTop: {
@@ -270,5 +294,21 @@ const styles = StyleSheet.create({
     heading: {
         color: "#2F2F2F",
         fontSize: 20
+    },
+
+    addMod: {
+        backgroundColor: 'rgba(0,0,0,0.8)',
+        width: "100%",
+        height: "100%",
+        zIndex: 20,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+
+    card:{
+        marginLeft: "auto",
+        marginRight: "auto",
+        width: 250,
+        height:170
     }
 })

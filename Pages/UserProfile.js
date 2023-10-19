@@ -25,14 +25,12 @@ export default function UserProfile({setIsAuth}) {
             const docRef = await addDoc(collection(db, "userData"), {
                 name: name,
                 surname: surname,
-                // email: email,
                 address: address,
                 userEmail: auth.currentUser.email,
                 phoneNumber: phoneNumber
 
             })
             alert("Added Successfuly");
-            // navigation.navigate("home")
             setIsAuth(true)
             
 
@@ -59,12 +57,6 @@ console.log(error);
                             style={styles.textInput}
                             onChangeText={(event) => setSurname(event)}
                         />
-                        {/* <TextInput
-                            placeholder='Enter email...'
-                            style={styles.textInput}
-                            onChangeText={(event) => setEmail(event)}
-
-                        /> */}
                         <TextInput
                             placeholder='Enter home address...'
                             style={styles.textInput}

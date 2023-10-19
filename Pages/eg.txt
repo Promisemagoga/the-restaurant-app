@@ -1,0 +1,51 @@
+    // const [updateUser, setUpdateUser] = useState([])
+    // const [name, setName] = useState("")
+    // const [surname, setSurname] = useState("")
+    // const [address, setAdress] = useState("")
+    // const [phoneNumber, setPhoneNumber] = useState("")
+    // const [userEmail, setUserEmail] = useState("")
+
+
+    // const updateFunc = async () => {
+    //     const docId = updateUserInfo.id
+    //     console.log("docId:", docId);
+    //     const data = {
+    //         name: updateUserInfo.name,
+    //         surname: updateUserInfo.surname,
+    //         address: updateUserInfo.address,
+    //         phoneNumber: updateUserInfo.phoneNumber,
+    //         userEmail: updateUserInfo.userEmail,
+    //     }
+
+    //     console.log("what's i n data object:", data);
+
+    //     const docRef = doc(db, 'userData', docId);
+    //     await updateDoc(docRef, data)
+    //         .then(() => {
+    //             console.log("Data successfully Updated");
+    //             setOpenModal(false)
+    //         })
+    //         .catch((error) => {
+    //             console.log("Error updating data:", error);
+    //         })
+    // }
+
+    // function handleChangeName(text) {
+    //     setName(text)
+    // }
+
+    // function handleChangeSurname(text) {
+    //     setSurname(text)
+    // }
+
+    // function handleChangeAddress(text) {
+    //     setAdress(text)
+    // }
+
+    // function handleChangePhoneNumber(text) {
+    //     setPhoneNumber(text)
+    // }
+
+    // function handleChangeEmail(text) {
+    //     setUserEmail(text)
+    // }

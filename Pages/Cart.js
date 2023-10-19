@@ -151,7 +151,7 @@ export default function Cart() {
                     </View>
                     <View style={styles.hr}></View>
                     <TouchableOpacity style={styles.displayButton}>
-                        <Text>{listCart.length} |</Text>
+                        <Text style={styles.CheckOuttext}>{listCart.length} <Text style={styles.divider}>|</Text></Text>
                         <View style={styles.checkOut}>
                             <Text style={styles.text}>CheckOut</Text>
                             <MaterialCommunityIcons name='greater-than' size={30} color={"#fff"} />
@@ -318,10 +318,19 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
 
+    CheckOuttext: {
+        color: "#fff",
+        paddingLeft: 10,
+        fontSize: 20
+    },
+
     heading: {
         fontSize: 20,
         paddingLeft: 10,
         fontWeight: "bold"
+    },
+    divider:{
+        fontSize: 30
     }
 
 
