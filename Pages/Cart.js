@@ -32,7 +32,6 @@ export default function Cart() {
                 cartItems.forEach(cart => {
                     finalPrice += parseInt(cart.price)
                 });
-                // console.log(finalPrice);
                 setTotalPrice(finalPrice)
                 setListCart(cartItems)
             }
@@ -152,10 +151,10 @@ export default function Cart() {
                     <View style={styles.hr}></View>
                     <TouchableOpacity style={styles.displayButton}>
                         <Text style={styles.CheckOuttext}>{listCart.length} <Text style={styles.divider}>|</Text></Text>
-                        <View style={styles.checkOut}>
-                            <Text style={styles.text}>CheckOut</Text>
+                        <TouchableOpacity style={styles.checkOut} onPress={() => navigation.navigate("payment", { listCart: { totalPrice: totalPrice, listCart: listCart } },)}>
+                            <Text style={styles.text} >CheckOut</Text>
                             <MaterialCommunityIcons name='greater-than' size={30} color={"#fff"} />
-                        </View>
+                        </TouchableOpacity>
                     </TouchableOpacity>
                 </View>
 
@@ -329,7 +328,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         fontWeight: "bold"
     },
-    divider:{
+    divider: {
         fontSize: 30
     }
 

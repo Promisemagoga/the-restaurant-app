@@ -14,6 +14,7 @@ import KidsMeals from './Pages/KidsMeals'
 import UserPage from './Pages/UserPage'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Cart from './Pages/Cart'
+import Payment from './Pages/Payment'
 
 
 const Stack = createNativeStackNavigator()
@@ -23,7 +24,6 @@ function StackNavigator() {
     useEffect(() => {
         const checkAuthentication = async () => {
             const isAuthenticated = await AsyncStorage.getItem('user')
-            console.log("check if logged in", isAuthenticated);
             setIsAuth(isAuthenticated)
         }
         checkAuthentication()
@@ -46,6 +46,8 @@ function StackNavigator() {
                             <Stack.Screen name='cat5' component={Sides} />
                             <Stack.Screen name='cat6' component={KidsMeals} />
                             <Stack.Screen name='cart' component={Cart} />
+                            <Stack.Screen name='payment' component={Payment} />
+
 
                         </>
                     ) : (

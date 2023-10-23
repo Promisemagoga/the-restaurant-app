@@ -10,7 +10,6 @@ export default function AddToCartBtn({ idItem }) {
     
 
     async function addToCart() {
-        // console.log("check itemID:", idItem);
 
         const userId = await getUserAsync();
 
@@ -20,7 +19,6 @@ export default function AddToCartBtn({ idItem }) {
                 var pendingOrders = null
                 const snapshot = await getDocs(collection(db, "carts"));
                 if (snapshot.docs.length > 0) {
-                    console.log("Something");
                     var pOrders = [];
                     snapshot.forEach((doc) => {
                         pOrders.push(doc.data())
@@ -30,10 +28,8 @@ export default function AddToCartBtn({ idItem }) {
                         itemId: idItem,
                     }
                     pOrders[0].item.push(myItem)
-                    console.log("line64", pOrders);
                     const docRef = await setDoc(doc(db, "carts", userId), pOrders[0])
                 } else {
-                    console.log("Nothing");
                     const myItem = {
                         item: [{
                             itemId: idItem,
@@ -56,8 +52,6 @@ export default function AddToCartBtn({ idItem }) {
     async function getUserAsync() {
         const signedInUser = await AsyncStorage.getItem("user");
         const results = signedInUser !== null ? JSON.parse(signedInUser) : null;
-
-        console.log("see user object", results._tokenResponse.localId);
 
         return signedInUser !== null ? results._tokenResponse.localId : null
     }

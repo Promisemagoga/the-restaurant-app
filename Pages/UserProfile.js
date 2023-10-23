@@ -8,7 +8,7 @@ import { auth, db } from '../Config/firebase';
 import { useNavigation } from '@react-navigation/native';
 
 
-export default function UserProfile({setIsAuth}) {
+export default function UserProfile({ setIsAuth }) {
     const [name, setName] = useState("")
     const [surname, setSurname] = useState("")
     // const [email, setEmail] = useState("")
@@ -27,15 +27,19 @@ export default function UserProfile({setIsAuth}) {
                 surname: surname,
                 address: address,
                 userEmail: auth.currentUser.email,
-                phoneNumber: phoneNumber
+                phoneNumber: phoneNumber,
+                cardName: cardName,
+                cardNumber: cardNumber,
+                expiryDate: expiryDate,
+                cvv: cvv
 
             })
             alert("Added Successfuly");
             setIsAuth(true)
-            
+
 
         } catch (error) {
-console.log(error);
+            console.log(error);
         }
     }
 
@@ -64,7 +68,7 @@ console.log(error);
 
                         />
                         <TextInput
-                                    keyboardType='numeric'
+                            keyboardType='numeric'
                             placeholder='Enter contact number...'
                             style={styles.textInput}
                             onChangeText={(event) => setPhoneNumber(event)}
@@ -76,13 +80,16 @@ console.log(error);
                                 <TextInput
                                     placeholder='Enter card name...'
                                     style={styles.textInput}
+                                    onChangeText={(event) => setCardName(event)}
+
 
                                 />
                                 <TextInput
                                     keyboardType='numeric'
                                     placeholder='Enter card number...'
                                     style={styles.textInput}
-                                  
+                                    onChangeText={(event) => setCardNumber(event)}
+
 
                                 />
                                 <View style={styles.dateCont}>
@@ -90,13 +97,16 @@ console.log(error);
                                         keyboardType='numeric'
                                         placeholder='MM/YYY'
                                         style={styles.dateInput}
-                                      
+                                        onChangeText={(event) => setExpiryDate(event)}
+
 
                                     />
                                     <TextInput
                                         keyboardType='numeric'
                                         placeholder='000'
                                         style={styles.dateInput}
+                                        onChangeText={(event) => setCvv(event)}
+
                                     />
                                 </View>
                             </View>

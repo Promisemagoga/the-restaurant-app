@@ -35,7 +35,6 @@ export default function UserPage() {
                     });
 
                     setUser(data);
-                    console.log("see data:", data);
                 }
             } else {
                 console.log("No user");
@@ -48,13 +47,10 @@ export default function UserPage() {
     async function getUserAsync() {
         const signedInUser = await AsyncStorage.getItem("user");
         const results = signedInUser !== null ? JSON.parse(signedInUser) : null;
-
-        console.log(results._tokenResponse.email);
         return signedInUser !== null ? results._tokenResponse.email : null
     }
 
     function modal(userDetails) {
-        console.log("see your user details:", userDetails);
         setUpdateUserInfo(userDetails)
         setOpenModal(true)
     }

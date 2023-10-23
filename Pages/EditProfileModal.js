@@ -31,20 +31,12 @@ export default function EditProfileModal({ setOpenModal, updateUserInfo }) {
                 setSurname(document.surname)
                 setPhoneNumber(document.phoneNumber)
                 setAdress(document.address)
-
-                              // console.log("document", document);
             } else {
                 console.log("No such document");
             }
         }
         fetchData()
     }, [])
-
-    // function handleChange(type, text) {
-
-    //     const toStore = { [type]: text }
-    //     setUpdatedData(toStore)
-    // }
 
     const updateData = async () => {
         

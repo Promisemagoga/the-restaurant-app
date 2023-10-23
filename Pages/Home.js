@@ -52,7 +52,7 @@ const navigation = useNavigation()
           </View>
         </View>
         <View style={styles.offersMainCont}>
-          <Text style={{ fontSize: 25, marginBottom: 20, color: "#7D7C7C" }}>Offers for you</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 20, color: "#7D7C7C" }}>Offers for you</Text>
           <View style={styles.scrollCour}>
             <Carousel
               data={carouselData}

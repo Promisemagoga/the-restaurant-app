@@ -23,7 +23,6 @@ export default function SignIn({ setIsAuth }) {
                 if (authenticated) {
                     const user = JSON.stringify(authenticated);
                     await AsyncStorage.setItem("user", user).then(() => {
-                        console.log("saved")
                     })
                     console.log("User Successfully logged in");
                     setIsAuth(true)

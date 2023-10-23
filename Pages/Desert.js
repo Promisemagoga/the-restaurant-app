@@ -20,15 +20,12 @@ export default function Desert() {
             const viewRef = collection(db, "items");
             const q = query(viewRef, where("category", "==", "Desert"))
             const querrySnapshot = await getDocs(q)
-            console.log("querrySnapshot", querrySnapshot);
-
             if (!querrySnapshot.empty) {
                 const data = querrySnapshot.docs.map((doc) => ({
                     id: doc.id,
                     ...doc.data(),
                 }))
                 setMenu(data)
-                console.log("data", data);
             } else {
                 console.log("No such document!");
 

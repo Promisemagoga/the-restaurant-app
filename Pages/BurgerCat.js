@@ -20,8 +20,6 @@ export default function BurgerCat() {
             const viewRef = collection(db, "items");
             const q = query(viewRef, where("category", "==", "Burger"))
             const querrySnapshot = await getDocs(q)
-            console.log("querrySnapshot", querrySnapshot);
-
             if (!querrySnapshot.empty) {
                 const data = querrySnapshot.docs.map((doc) => ({
                     id: doc.id,

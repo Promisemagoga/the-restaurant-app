@@ -20,7 +20,6 @@ export default function Sides() {
             const viewRef = collection(db, "items");
             const q = query(viewRef, where("category", "==", "Sides"))
             const querrySnapshot = await getDocs(q)
-            console.log("querrySnapshot", querrySnapshot);
 
             if (!querrySnapshot.empty) {
                 const data = querrySnapshot.docs.map((doc) => ({
@@ -28,7 +27,6 @@ export default function Sides() {
                     ...doc.data(),
                 }))
                 setMenu(data)
-                console.log("data", data);
             } else {
                 console.log("No such document!");
 

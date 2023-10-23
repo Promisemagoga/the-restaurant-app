@@ -23,7 +23,6 @@ export default function SignUp({setIsAuth}) {
                     console.log("saved")
                 })
                 console.log("User Successfully registered");
-                // setIsAuth(true)
                 navigation.navigate("profile")
             }
 
