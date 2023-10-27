@@ -1,4 +1,4 @@
-import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useNavigation } from '@react-navigation/native';
@@ -7,10 +7,22 @@ import { useNavigation } from '@react-navigation/native';
 export default function Welcome() {
 
     const navigation = useNavigation()
-    
+
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.contentContainer}>
+            <ImageBackground source={require("../assets/welcomebg.jpg")} style={styles.bg}>
+            <Text style={styles.logoText}>TasteTrail</Text>
+                    <Text style={styles.logoParagraph}>Where Food Meets Innovation: Your Perfect Dining Companion.</Text>
+                <View style={styles.contentContainer}>
+                    <TouchableOpacity style={styles.getStarted} onPress={() => navigation.navigate("SignIn")}>
+                        <Text style={styles.getStartedText}>GET STARTED</Text>
+                        {/* <View style={styles.getStartedIcon}>
+                            <MaterialCommunityIcons name='greater-than' size={20} color={"#fea70d"} style={styles.icon} />
+                        </View> */}
+                    </TouchableOpacity>
+                </View>
+            </ImageBackground>
+            {/* <View style={styles.contentContainer}>
                 <View>
                     <Image
                         source={require('../assets/burger.png')}
@@ -25,7 +37,7 @@ export default function Welcome() {
                         <MaterialCommunityIcons name='greater-than' size={20} color={"#fea70d"} style={styles.icon} />
                     </View>
                 </TouchableOpacity>
-            </View>
+            </View> */}
         </SafeAreaView>
     )
 }
@@ -35,13 +47,23 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#FFBB5C',
         justifyContent: 'center',
+      
+    },
+
+    bg: {
+        flex: 1,
+        resizeMode: 'cover',
     },
 
     contentContainer: {
         display: "flex",
         flexDirection: "column",
+        rowGap: 10,
         alignItems: "center",
-        rowGap: 100
+        marginTop:"auto",
+        marginBottom: 20
+
+
     },
 
     logo: {
@@ -50,10 +72,12 @@ const styles = StyleSheet.create({
     },
 
     logoText: {
+        color: "#fea70d",
         marginTop: 15,
         textAlign: "center",
-        fontSize: 48,
-        fontWeight: "700",
+        fontSize: 50,
+        fontWeight: "bold",
+
 
     },
 
@@ -62,11 +86,11 @@ const styles = StyleSheet.create({
         flexDirection: "row-reverse",
         alignItems: "center",
         justifyContent: "space-around",
-        // marginTop: 80,
-        backgroundColor: '#fea70d',
-        width: 230,
+        backgroundColor: "transparent",
+        borderWidth: 2,
+        borderColor: "#fea70d",
+        width: "90%",
         height: 60,
-        borderRadius: 30
 
     },
 
@@ -89,11 +113,13 @@ const styles = StyleSheet.create({
         marginBottom: "auto"
     },
 
-    logoParagraph:{
+    logoParagraph: {
+        color: "#fff",
         textAlign: "center",
         marginLeft: "auto",
         marginRight: "auto",
-        width: 200,
+        fontSize: 18,
+        width: 280,
         marginTop: 10
     }
 });

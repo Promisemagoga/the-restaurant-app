@@ -1,10 +1,11 @@
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Image, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../Config/firebase'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BlurView } from 'expo-blur';
 
 
 
@@ -19,7 +20,7 @@ export default function SignIn({ setIsAuth }) {
     function login() {
         signInWithEmailAndPassword(auth, email, password)
             .then(async (authenticated) => {
-     
+
                 if (authenticated) {
                     const user = JSON.stringify(authenticated);
                     await AsyncStorage.setItem("user", user).then(() => {
@@ -42,8 +43,34 @@ export default function SignIn({ setIsAuth }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.loginContainer}>
-                <Text style={styles.signIn}>SignIn</Text>
+            <ImageBackground source={require("../assets/loginbg.jpg")} style={styles.bg}>
+                <BlurView intensity={10} >
+                    <View style={styles.backgroundColorCont}>
+                        <View style={styles.form}>
+                            <Text style={styles.signIn}>SignIn</Text>
+
+                            <TextInput
+                                placeholder='Enter email...'
+                                placeholderTextColor='#fff'
+                                style={styles.textInput}
+                                onChangeText={(event) => setEmail(event)}
+                            />
+                            <TextInput
+                                placeholder='Enter password...'
+                                style={styles.textInput}
+                                onChangeText={(event) => setPassword(event)}
+                                placeholderTextColor='#fff'
+
+                            />
+                            <TouchableOpacity style={styles.signInBtn} onPress={login}>
+                                <Text style={styles.signInBtnText}>LOGIN</Text>
+                            </TouchableOpacity>
+                            <Text style={styles.newMember}>New to TasteTrail? <Text style={styles.span} onPress={() => navigation.navigate("SignUp")}>Register</Text></Text>
+                        </View>
+                    </View>
+                </BlurView>
+            </ImageBackground>
+            {/* <View style={styles.loginContainer}>
                 <Image
                     source={require("../assets/login.png")}
                 />
@@ -63,7 +90,7 @@ export default function SignIn({ setIsAuth }) {
                     <Text style={styles.signInBtnText}>SignIn</Text>
                 </TouchableOpacity>
                 <Text style={styles.newMember}>New to Foodhub? <Text style={styles.span} onPress={() => navigation.navigate("SignUp")}>signUp</Text></Text>
-            </View>
+            </View> */}
         </SafeAreaView>
     )
 }
@@ -71,20 +98,51 @@ export default function SignIn({ setIsAuth }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
         justifyContent: 'center',
+
+    },
+
+    bg: {
+        flex: 1,
+        resizeMode: 'cover',
+    },
+
+    backgroundColorCont: {
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        // backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        height: "100%",
+
     },
 
     textInput: {
-        borderBottomWidth: 1,
-        width: 300
+        borderWidth: 1,
+        borderColor: "#FFFFFF",
+        height: 50,
+        width: 300,
+        borderRadius: 5,
+        paddingLeft: 5,
+        color: "#fff",
+        fontSize: 20
+
     },
 
     form: {
+        // backgroundColor: "#fff",
         display: "flex",
         flexDirection: "column",
-        rowGap: 30
+        width: "90%",
+        height: 400,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 20,
+        marginLeft: "auto",
+        marginRight: "auto",
+        marginTop: "auto",
+        marginBottom: "auto",
+        rowGap: 30,
+        backgroundColor: 'rgba(30, 30, 30, 0.7)',
+        borderRadius: 20,
+        // blurRadius: 30,
     },
 
     loginContainer: {
@@ -102,7 +160,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fea70d',
         width: 230,
         height: 40,
-        borderRadius: 30
+        borderRadius: 5
 
     },
 
@@ -113,8 +171,9 @@ const styles = StyleSheet.create({
     },
 
     signIn: {
+        color: "#fff",
         textAlign: "center",
-        fontSize: 48,
+        fontSize: 38,
         fontWeight: "700",
 
     },
@@ -124,7 +183,8 @@ const styles = StyleSheet.create({
     },
 
     newMember: {
-        fontSize: 19
+        fontSize: 18,
+        color: "#fff"
     }
 
 });
