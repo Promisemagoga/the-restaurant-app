@@ -42,8 +42,11 @@ export default function Baverages() {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.productNav}>
-                <Text style={styles.navHead}>Sharing meal list</Text>
-                <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")} />
+                <View style={styles.navContent}>
+                    <MaterialCommunityIcons name='account' size={30} color={"#2F2F2F"} style={styles.icon} onPress={() => navigation.navigate("user")} />
+                    <Text style={styles.navHead}>Bevarages</Text>
+                    <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")} />
+                </View>
             </View>
             <FlatList
                 data={menu}
@@ -96,15 +99,24 @@ const styles = StyleSheet.create({
     },
 
     productNav: {
-        display: "flex",
         width: "100%",
-        height: 80,
-        flexDirection: "row-reverse",
+        height: 100,
         backgroundColor: "#ffffff",
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+
+    },
+
+    navContent: {
+        display: "flex",
+        flexDirection: "row-reverse",
+        marginTop: 20,
+        padding: 10,
+        width: "100%",
+        height: 100,
         alignItems: "center",
-        justifyContent: "flex-end",
-        padding: 20,
-        marginBottom: 50
+        justifyContent: "space-between",
     },
 
     contentTop: {

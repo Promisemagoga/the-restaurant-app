@@ -19,9 +19,7 @@ export default function BottomNav({ setAuthStatus }) {
   return (
     <View style={styles.BottomNav}>
       <MaterialCommunityIcons name='home' size={30} color={"#2F2F2F"} style={styles.icon} onPress={() => navigation.navigate("home")} />
-      {/* <MaterialCommunityIcons name='tray-full' size={30} color={"#fea70d"} style={styles.icon} onPress={() => navigation.navigate("home")}/> */}
       <MaterialCommunityIcons name='heart' size={30} color={"#2F2F2F"} style={styles.icon} />
-      <MaterialCommunityIcons name='cart-variant' size={30} color={"#2F2F2F"} style={styles.icon}  onPress={() => navigation.navigate("cart")}/>
       <MaterialCommunityIcons name='account' size={30} color={"#2F2F2F"} style={styles.icon} onPress={() => navigation.navigate("user")} />
       <MaterialCommunityIcons name='logout' size={30} color={"#2F2F2F"} style={styles.icon} onPress={logout} />
     </View>

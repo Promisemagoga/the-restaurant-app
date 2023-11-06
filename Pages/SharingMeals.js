@@ -39,15 +39,18 @@ export default function SharingMeals() {
     }, [])
 
 
-   
+
 
     if (!menu) return <Text>Loading...</Text>;
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.productNav}>
-                <Text style={styles.navHead}>Sharing meal list</Text>
-                <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")} />
+                <View style={styles.navContent}>
+                    <MaterialCommunityIcons name='account' size={30} color={"#2F2F2F"} style={styles.icon} onPress={() => navigation.navigate("user")} />
+                    <Text style={styles.navHead}>Sharing Meals</Text>
+                    <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")} />
+                </View>
             </View>
             <ScrollView>
                 <View style={styles.ScrollView}>
@@ -63,12 +66,12 @@ export default function SharingMeals() {
                                         <Text style={styles.price}>R{items.price}</Text>
                                         <Text style={styles.name}>{items.name}</Text>
                                     </View>
-                                 <AddToCartBtn idItem={items.id}/>
+                                    <AddToCartBtn idItem={items.id} />
                                 </View>
                             </View>
                         ))
                     }
-             
+
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -101,17 +104,25 @@ const styles = StyleSheet.create({
     ScrollView: {
         width: "100%"
     },
-
     productNav: {
-        display: "flex",
         width: "100%",
-        height: 80,
-        flexDirection: "row-reverse",
+        height: 100,
         backgroundColor: "#ffffff",
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+
+    },
+
+    navContent: {
+        display: "flex",
+        flexDirection: "row-reverse",
+        marginTop: 20,
+        padding: 10,
+        width: "100%",
+        height: 100,
         alignItems: "center",
-        justifyContent: "flex-end",
-        padding: 20,
-        marginBottom: 50
+        justifyContent: "space-between",
     },
 
     contentTop: {
@@ -147,7 +158,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
 
-   
+
 
     price: {
         color: "#009687",

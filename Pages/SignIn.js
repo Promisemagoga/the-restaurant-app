@@ -44,7 +44,6 @@ export default function SignIn({ setIsAuth }) {
     return (
         <SafeAreaView style={styles.container}>
             <ImageBackground source={require("../assets/loginbg.jpg")} style={styles.bg}>
-                <BlurView intensity={10} >
                     <View style={styles.backgroundColorCont}>
                         <View style={styles.form}>
                             <Text style={styles.signIn}>SignIn</Text>
@@ -68,7 +67,6 @@ export default function SignIn({ setIsAuth }) {
                             <Text style={styles.newMember}>New to TasteTrail? <Text style={styles.span} onPress={() => navigation.navigate("SignUp")}>Register</Text></Text>
                         </View>
                     </View>
-                </BlurView>
             </ImageBackground>
             {/* <View style={styles.loginContainer}>
                 <Image

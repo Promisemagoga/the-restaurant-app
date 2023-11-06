@@ -1,29 +1,27 @@
 import { SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { ImageBackground } from 'react-native'
+import { useNavigation } from '@react-navigation/native';
 
 export default function Navbar() {
-    
+    const navigation = useNavigation()
+
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.navBar}>
+            <ImageBackground source={require('../assets/french-fries.jpg')} style={styles.banner}>
                 <View style={styles.navContent}>
-                    <View style={styles.greetings}>
-                    <MaterialCommunityIcons name='map-marker' size={30} color={"#fff"} />
+                    <MaterialCommunityIcons name='magnify' size={40} color={"#000000"} />
                     <View>
-                        <Text style={{color: "#fff", fontSize: 20, fontWeight: "bold"}}>Hi, Promise</Text>
-                    <Text style={{color: "#fff", fontSize: 16,}}>Pretoria, ZA</Text>
+                        <Text style={{ color: "#fff", fontSize: 20, fontWeight: "100" }}>Current location</Text>
+                        <View style={styles.greetings}>
+                            <MaterialCommunityIcons name='map-marker' size={30} color={"#fea70d"} />
+                            <Text style={{ color: "#000", fontSize: 18, }}>Pretoria, ZA</Text>
+                        </View>
                     </View>
-                    </View>
-                    <MaterialCommunityIcons name='menu' size={30} color={"#fff"} />
+                    <MaterialCommunityIcons name='cart-variant' size={40} color={"#000"} style={styles.icon} onPress={() => navigation.navigate("cart")} />
                 </View>
-                <TextInput
-                 style={styles.search}
-                 placeholder='Type product name to search...'
-                 >
-                <MaterialCommunityIcons name='magnify' size={30} color={"#000000"} />
-                </TextInput>
-            </View>
+            </ImageBackground>
         </SafeAreaView>
     )
 }
@@ -35,23 +33,24 @@ const styles = StyleSheet.create({
         width: "100%",
         marginBottom: 100,
     },
-    navBar: {
+    banner: {
         width: "100%",
-        height: 200,
+        height: 220,
         backgroundColor: "#fea70d",
-        borderBottomRightRadius: 100,
-        borderBottomLeftRadius: 100,
         alignItems: "center"
 
     },
 
     navContent: {
         width: "100%",
-        marginTop: 50,
-        padding: 30,
+       height: 220,
+        paddingTop: 70,
+        paddingLeft: 20,
+        paddingRight:20,
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        backgroundColor: "rgba(0,0,0,0.5)"
     },
 
     search: {
@@ -62,15 +61,15 @@ const styles = StyleSheet.create({
         height: 40,
         backgroundColor: "#ffffff",
         borderRadius: 10,
-      
 
-    }, 
 
-    greetings:{
+    },
+
+    greetings: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        columnGap: 20,
+        columnGap: 10,
     }
 
 })

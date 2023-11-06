@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
     },
 
     horizontalLine: {
-        borderBottomColor: '445069',
+        borderBottomColor: '#445069',
         borderBottomWidth: 1,
         marginVertical: 10,
     },

@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function Home({ setIsAuth }) {
 
   const [authStatus, setAuthStatus] = useState(true);
-const navigation = useNavigation()
+  const navigation = useNavigation()
   useEffect(() => {
     if (!authStatus) {
       setIsAuth(false)
@@ -23,31 +23,44 @@ const navigation = useNavigation()
       <Navbar />
       <ScrollView style={styles.homeCont}>
         <View style={styles.catCont}>
-          <Text style={{ fontSize: 25, marginBottom: 20, color: "#7D7C7C" }}>Categories</Text>
+          <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 20, color: "#7D7C7C" }}>Categories</Text>
           <View style={styles.categories}>
             <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("cat1")}>
-              <Image source={require("../assets/logo.png")} style={{ width: "100%", height: 70 }} />
-              <Text>Burgers</Text>
+              <View style={styles.categoryCont}>
+                <Image source={require("../assets/ca1.png")} style={{ width: "60%", height: 60 }} />
+                <Text style={{ fontSize: 14, fontWeight: "bold", marginBottom: 20, color: "#fff" }}>Burgers</Text>
+
+              </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.item}  onPress={() => navigation.navigate("cat2")}>
-              <Image source={require("../assets/sharing.png")} style={{ width: "100%", height: 70 }} />
-              <Text>Sharing Meals</Text>
+            <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("cat2")}>
+              <View style={styles.categoryCont}>
+                <Image source={require("../assets/reload.png")} style={{ width: "70%", height: 70 }} />
+                <Text style={{ fontSize: 14, fontWeight: "500", marginBottom: 20, color: "#fff" }}>Sharing</Text>
+              </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.item}  onPress={() => navigation.navigate("cat3")}>
-              <Image source={require("../assets/drink.png")} style={{ width: "100%", height: 70 }} />
-              <Text>Bevarages</Text>
+            <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("cat3")}>
+              <View style={styles.categoryCont}>
+                <Image source={require("../assets/cat2.png")} style={{ width: "70%", height: 70 }} />
+                <Text style={{ fontSize: 14, fontWeight: "500", marginBottom: 20, color: "#fff" }}>Bevarages</Text>
+              </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.item}  onPress={() => navigation.navigate("cat4")}>
-              <Image source={require("../assets/cake.png")} style={{ width: "100%", height: 70 }} />
-              <Text>Dessert</Text>
+            <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("cat4")}>
+              <View style={styles.categoryCont}>
+                <Image source={require("../assets/938063.png")} style={{ width: "70%", height: 70 }} />
+                <Text style={{ fontSize: 15, fontWeight: "500", marginBottom: 20, color: "#fff" }}>Dessert</Text>
+              </View>
             </TouchableOpacity >
-            <TouchableOpacity style={styles.item}  onPress={() => navigation.navigate("cat5")}>
-              <Image source={require("../assets/fries.png")} style={{ width: "100%", height: 70 }} />
-              <Text>Sides</Text>
+            <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("cat5")}>
+              <View style={styles.categoryCont}>
+                <Image source={require("../assets/friess.png")} style={{ width: "60%", height: 60 }} />
+                <Text style={{ fontSize: 15, fontWeight: "500", marginBottom: 20, color: "#fff" }}>Sides</Text>
+              </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.item}  onPress={() => navigation.navigate("cat6")}>
-              <Image source={require("../assets/kids-meal.png")} style={{ width: "100%", height: 70 }} />
-              <Text>Kiddies Meal</Text>
+            <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("cat6")}>
+              <View style={styles.categoryCont}>
+                <Image source={require("../assets/9097136.png")} style={{ width: "70%", height: 60 }} />
+                <Text style={{ fontSize: 15, fontWeight: "500", marginBottom: 20, color: "#fff" }}>Kiddies</Text>
+              </View>
             </TouchableOpacity>
           </View>
         </View>
@@ -98,13 +111,32 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center"
-    
+
   },
 
   item: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     width: "30%",
+    height: 100,
     margin: 6,
+    marginTop: 20,
     padding: 5,
+  },
+
+  categoryCont: {
+    width: "100%",
+    height: 100,
+    borderRadius: 100,
+    backgroundColor: "#FF9209",
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
   },
 
   catCont: {
@@ -118,23 +150,23 @@ const styles = StyleSheet.create({
   carouselContainer: {
     display: "flex",
     flexDirection: "column",
-       width: 320,
-        // height: 200,
-        backgroundColor: 'white',
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-        margin: 5,
-        padding: 20
+    width: 320,
+    // height: 200,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    margin: 5,
+    padding: 20
   },
 
-  offersMainCont:{
+  offersMainCont: {
     marginTop: 50,
     marginBottom: 50
   }
