@@ -37,6 +37,7 @@ export default function Cart() {
 
                     const myItem = {
                         itemId: listCart,
+                        totalPrice: totalPrice
                     }
                     pOrders[0].item.push(myItem)
                     const docRef = await setDoc(doc(db, "orders", userId), pOrders[0])
