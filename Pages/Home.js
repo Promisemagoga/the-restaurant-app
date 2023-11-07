@@ -24,43 +24,50 @@ export default function Home({ setIsAuth }) {
     <SafeAreaView style={styles.container}>
       <Navbar />
       <ScrollView style={styles.homeCont}>
-        <ScrollView horizontal style={{ width: "100%" }}>
-          <Tab style={{ flexDirection: 'row' }} value={index} onChange={setIndex} dense>
-            <Tab.Item>
-              <View style={styles.categoryTab}>
-              <Image source={require("../assets/logo.png")} style={{ width: "100%", height: 60 }} />
-                <Text style={{ fontSize: 14, fontWeight: "bold", marginBottom: 20, color: "#000" }}>Burgers</Text>
-              </View>
-            </Tab.Item>
-            <Tab.Item>
-              <View style={styles.categoryTab}>
-              <Image source={require("../assets/sharing.png")} style={{ width: "80%", height: 50}} />
-                <Text style={{ fontSize: 14, fontWeight: "500", color: "#000" }}>Sharing</Text>
-              </View>
-            </Tab.Item>
-            <Tab.Item>
-              <View style={styles.categoryTab}>
-              <Image source={require("../assets/cat2.png")} style={{ width: "70%", height: 70 }} />
-                <Text style={{ fontSize: 14, fontWeight: "500", marginBottom: 20, color: "#fff" }}>Bevarages</Text>
-              </View>
-            </Tab.Item>
-            <Tab.Item>
-              <View style={styles.categoryTab}>
+      <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 20, color: "#7D7C7C" }}>Categories</Text>
+        <View style={{ height: 150 }}>
+          <ScrollView horizontal>
+            <Tab containerStyle={{ flexDirection: 'row', flex: 1 }} value={index} onChange={setIndex} dense>
+              <Tab.Item key="cat1">
+                <TouchableOpacity style={styles.categoryTab} onPress={() => navigation.navigate("cat1")}>
+                  <Image source={require("../assets/logo.png")} style={{ width: "100%", height: 60 }} />
+                  <Text style={{ fontSize: 14, fontWeight: "bold", color: "#000" }}>Burgers</Text>
+                </TouchableOpacity>
+              </Tab.Item>
+              <Tab.Item key="cat2"  >
+                <TouchableOpacity style={styles.categoryTab} onPress={() => navigation.navigate("cat2")}>
+                  <Image source={require("../assets/3burgers-removebg-preview.png")} style={{ width: "100%", height: 60 }} />
+                  <Text style={{ fontSize: 14, fontWeight: "bold", color: "#000" }}>Sharing</Text>
+                </TouchableOpacity>
+              </Tab.Item>
+              <Tab.Item key="cat3">
+                <TouchableOpacity style={styles.categoryTab}  onPress={() => navigation.navigate("cat3")}>
+                  <Image source={require("../assets/drink.png")} style={{ width: "100%", height: 90 }} />
+                  <Text style={{ fontSize: 14, fontWeight: "bold",color: "#000" }}>Beverages</Text>
+                </TouchableOpacity>
+              </Tab.Item>
+              <Tab.Item key="cat4">
+                <TouchableOpacity style={styles.categoryTab}  onPress={() => navigation.navigate("cat4")}>
+                  <Image source={require("../assets/iceCream3-removebg-preview.png")} style={{ width: "100%", height: 100 }} />
+                  <Text style={{ fontSize: 15, fontWeight: "bold", color: "#000" }}>Dessert</Text>
+                </TouchableOpacity>
+              </Tab.Item>
+              <Tab.Item key="cat5">
+                <TouchableOpacity style={styles.categoryTab}  onPress={() => navigation.navigate("cat5")}>
+                  <Image source={require("../assets/fries4.jpg")} style={{ width: "70%", height: 77 }} />
+                  <Text style={{ fontSize: 15, fontWeight: "bold", color: "#000" }}>Sides</Text>
+                </TouchableOpacity>
+              </Tab.Item>
+              <Tab.Item key="cat6" >
+                <TouchableOpacity style={styles.categoryTab} onPress={() => navigation.navigate("cat6")}>
+                  <Image source={require("../assets/kids-meal.png")} style={{ width: "100%", height: 70 }} />
+                  <Text style={{ fontSize: 15, fontWeight: "bold", color: "#000" }}>Kiddies</Text>
+                </TouchableOpacity>
+              </Tab.Item>
+            </Tab>
+          </ScrollView>
+        </View>
 
-              </View>
-            </Tab.Item>
-            <Tab.Item>
-              <View style={styles.categoryTab}>
-
-              </View>
-            </Tab.Item>
-            <Tab.Item>
-              <View style={styles.categoryTab}>
-
-              </View>
-            </Tab.Item>
-          </Tab>
-        </ScrollView>
 
         {/* <View style={styles.catCont}>
           <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 20, color: "#7D7C7C" }}>Categories</Text>
@@ -142,7 +149,7 @@ const styles = StyleSheet.create({
   },
 
   homeCont: {
-    marginTop: 120,
+    marginTop: 100,
     padding: 10,
   },
 
@@ -217,7 +224,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D8DBE2",
     borderRadius: 20,
-    display:"flex",
+    display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center"

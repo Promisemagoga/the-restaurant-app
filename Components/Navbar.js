@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-
+        columnGap: 5,
         alignItems: "center"
 
     },
