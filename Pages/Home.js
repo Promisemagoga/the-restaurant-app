@@ -34,12 +34,14 @@ export default function Home({ setIsAuth }) {
             </Tab.Item>
             <Tab.Item>
               <View style={styles.categoryTab}>
-
+              <Image source={require("../assets/sharing.png")} style={{ width: "80%", height: 50}} />
+                <Text style={{ fontSize: 14, fontWeight: "500", color: "#000" }}>Sharing</Text>
               </View>
             </Tab.Item>
             <Tab.Item>
               <View style={styles.categoryTab}>
-
+              <Image source={require("../assets/cat2.png")} style={{ width: "70%", height: 70 }} />
+                <Text style={{ fontSize: 14, fontWeight: "500", marginBottom: 20, color: "#fff" }}>Bevarages</Text>
               </View>
             </Tab.Item>
             <Tab.Item>
