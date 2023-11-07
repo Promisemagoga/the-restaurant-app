@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 
     logoText: {
         color: "#fea70d",
-        marginTop: 15,
+        marginTop: 30,
         textAlign: "center",
         fontSize: 50,
         fontWeight: "bold",
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
         marginLeft: "auto",
         marginRight: "auto",
         fontSize: 18,
-        width: 280,
+        width: 250,
         marginTop: 10
     }
 });

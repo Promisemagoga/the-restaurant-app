@@ -5,6 +5,7 @@ import Carousel from 'react-native-snap-carousel';
 import carouselData from '../carouselData';
 import BottomNav from '../Components/BottomNav';
 import { useNavigation } from '@react-navigation/native';
+import { Tab } from '@rneui/themed';
 
 
 
@@ -12,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function Home({ setIsAuth }) {
 
   const [authStatus, setAuthStatus] = useState(true);
+  const [index, setIndex] = React.useState(0);
   const navigation = useNavigation()
   useEffect(() => {
     if (!authStatus) {
@@ -22,20 +24,56 @@ export default function Home({ setIsAuth }) {
     <SafeAreaView style={styles.container}>
       <Navbar />
       <ScrollView style={styles.homeCont}>
-        <View style={styles.catCont}>
+        <ScrollView horizontal style={{ width: "100%" }}>
+          <Tab style={{ flexDirection: 'row' }} value={index} onChange={setIndex} dense>
+            <Tab.Item>
+              <View style={styles.categoryTab}>
+              <Image source={require("../assets/logo.png")} style={{ width: "100%", height: 60 }} />
+                <Text style={{ fontSize: 14, fontWeight: "bold", marginBottom: 20, color: "#000" }}>Burgers</Text>
+              </View>
+            </Tab.Item>
+            <Tab.Item>
+              <View style={styles.categoryTab}>
+
+              </View>
+            </Tab.Item>
+            <Tab.Item>
+              <View style={styles.categoryTab}>
+
+              </View>
+            </Tab.Item>
+            <Tab.Item>
+              <View style={styles.categoryTab}>
+
+              </View>
+            </Tab.Item>
+            <Tab.Item>
+              <View style={styles.categoryTab}>
+
+              </View>
+            </Tab.Item>
+            <Tab.Item>
+              <View style={styles.categoryTab}>
+
+              </View>
+            </Tab.Item>
+          </Tab>
+        </ScrollView>
+
+        {/* <View style={styles.catCont}>
           <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 20, color: "#7D7C7C" }}>Categories</Text>
           <View style={styles.categories}>
             <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("cat1")}>
               <View style={styles.categoryCont}>
-                <Image source={require("../assets/ca1.png")} style={{ width: "60%", height: 60 }} />
+                <Image source={require("../assets/logo.png")} style={{ width: "100%", height: 60 }} />
                 <Text style={{ fontSize: 14, fontWeight: "bold", marginBottom: 20, color: "#fff" }}>Burgers</Text>
 
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("cat2")}>
               <View style={styles.categoryCont}>
-                <Image source={require("../assets/reload.png")} style={{ width: "70%", height: 70 }} />
-                <Text style={{ fontSize: 14, fontWeight: "500", marginBottom: 20, color: "#fff" }}>Sharing</Text>
+                <Image source={require("../assets/sharing.png")} style={{ width: "100%", height: 70, position:"absolute",zIndex:10, top: -2 }} />
+                <Text style={{ fontSize: 14, fontWeight: "500", color: "#fff", zIndex:20,marginTop:70 }}>Sharing</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("cat3")}>
@@ -63,7 +101,7 @@ export default function Home({ setIsAuth }) {
               </View>
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
         <View style={styles.offersMainCont}>
           <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 20, color: "#7D7C7C" }}>Offers for you</Text>
           <View style={styles.scrollCour}>
@@ -169,6 +207,18 @@ const styles = StyleSheet.create({
   offersMainCont: {
     marginTop: 50,
     marginBottom: 50
+  },
+
+  categoryTab: {
+    width: 100,
+    height: 140,
+    borderWidth: 1,
+    borderColor: "#D8DBE2",
+    borderRadius: 20,
+    display:"flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center"
   }
 
 });
