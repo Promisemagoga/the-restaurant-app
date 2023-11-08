@@ -56,17 +56,19 @@ export default function SharingMeals() {
                 <View style={styles.ScrollView}>
                     {
                         menu.map((items, index) => (
-                            <View style={styles.box} key={index}>
+                            <View style={styles.box}>
                                 <View style={styles.contentTop}>
+                                    <View style={{display:"flex", flexDirection:"column",rowGap: 10}}>
+                                    <Text style={styles.name}>{items.name}</Text>
                                     <Text style={styles.description}>{items.description}</Text>
-                                    <Image source={{ uri: items.imgUrl }} style={styles.img} />
+                                    </View>
+                                    <Image source={{uri: items.imgUrl}} style={styles.img} />
                                 </View>
                                 <View style={styles.contentBottom}>
-                                    <View>
+                    
                                         <Text style={styles.price}>R{items.price}</Text>
-                                        <Text style={styles.name}>{items.name}</Text>
-                                    </View>
-                                    <AddToCartBtn idItem={items.id} />
+                              
+                                 <AddToCartBtn idItem={items.id}/>
                                 </View>
                             </View>
                         ))
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
-        margin: 5,
+        margin: 20,
         padding: 20
     },
 
@@ -140,8 +142,9 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     img: {
-        width: 150,
+        width: "50%",
         height: 100,
+        objectFit: "contain",
         borderRadius: 10
     },
 
@@ -155,8 +158,15 @@ const styles = StyleSheet.create({
 
     description: {
         width: 150,
-        fontSize: 18,
+        fontSize: 16,
+        fontWeight: "200"
     },
+
+    name: {
+        color: "#009687",
+        fontSize: 20
+    },
+
 
 
 
@@ -166,7 +176,4 @@ const styles = StyleSheet.create({
         fontSize: 22
     },
 
-    name: {
-        color: "#009687",
-    }
 });

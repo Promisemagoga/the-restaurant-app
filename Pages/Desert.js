@@ -39,7 +39,7 @@ export default function Desert() {
 
     return (
         <SafeAreaView style={styles.container}>
-             <View style={styles.productNav}>
+            <View style={styles.productNav}>
                 <View style={styles.navContent}>
                     <MaterialCommunityIcons name='account' size={30} color={"#2F2F2F"} style={styles.icon} onPress={() => navigation.navigate("user")} />
                     <Text style={styles.navHead}>Dessert</Text>
@@ -52,15 +52,17 @@ export default function Desert() {
                         menu.map((items, index) => (
                             <View style={styles.box}>
                                 <View style={styles.contentTop}>
-                                    <Text style={styles.description}>{items.description}</Text>
-                                    <Image source={{uri: items.imgUrl}} style={styles.img} />
+                                    <View style={{ display: "flex", flexDirection: "column", rowGap: 10 }}>
+                                        <Text style={styles.name}>{items.name}</Text>
+                                        <Text style={styles.description}>{items.description}</Text>
+                                    </View>
+                                    <Image source={{ uri: items.imgUrl }} style={styles.img} />
                                 </View>
                                 <View style={styles.contentBottom}>
-                                    <View>
-                                        <Text style={styles.price}>R{items.price}</Text>
-                                        <Text style={styles.name}>{items.name}</Text>
-                                    </View>
-                                 <AddToCartBtn idItem={items.id}/>
+
+                                    <Text style={styles.price}>R{items.price}</Text>
+
+                                    <AddToCartBtn idItem={items.id} />
                                 </View>
                             </View>
                         ))
@@ -76,10 +78,11 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: "#fff"
     },
     box: {
         width: 350,
-        height: 200,
+        height: 230,
         backgroundColor: 'white',
         borderRadius: 10,
         shadowColor: '#000',
@@ -90,10 +93,10 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
-        margin: 5,
+        marginTop: 20,
+        marginBottom: 20,
         padding: 20
     },
-
     ScrollView: {
         width: "100%"
     },
@@ -133,8 +136,9 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     img: {
-        width: 150,
-        height: 100,
+        width: "50%",
+        height: 120,
+        objectFit: "contain",
         borderRadius: 10
     },
 
@@ -147,9 +151,17 @@ const styles = StyleSheet.create({
     },
 
     description: {
-        width: 150,
-        fontSize: 18,
+        width: 130,
+        fontSize: 14,
+        fontWeight: "200"
     },
+
+    name: {
+        width: 130,
+        color: "#009687",
+        fontSize: 16
+    },
+
 
     addBtn: {
         borderWidth: 1,
@@ -172,7 +184,5 @@ const styles = StyleSheet.create({
         fontSize: 22
     },
 
-    name: {
-        color: "#009687",
-    }
+
 });

@@ -57,7 +57,7 @@ export default function Navbar() {
                     <View>
                         {user.map((data, index) => (
                             <View key={index}>
-                                <Text style={{ color: "#7D7C7C", fontSize: 18, fontWeight: "bold" }}>Hi {data.name}</Text>
+                                <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10, color: "#7D7C7C" }}>Hi {data.name}</Text>
                             </View>
                         ))}
                         <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20, color: "#000" }}>Are you starving?🔥🔥</Text>

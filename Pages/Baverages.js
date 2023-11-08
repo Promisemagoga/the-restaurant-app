@@ -134,8 +134,9 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     img: {
-        width: 150,
+        width: "50%",
         height: 100,
+        objectFit: "contain",
         borderRadius: 10
     },
 
@@ -149,8 +150,11 @@ const styles = StyleSheet.create({
 
     description: {
         width: 150,
-        fontSize: 18,
+        fontSize: 16,
+        fontWeight: "200"
     },
+
+    
 
     addBtn: {
         borderWidth: 1,
