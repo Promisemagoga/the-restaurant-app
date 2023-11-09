@@ -164,6 +164,31 @@ export default function Cart() {
         }
         return item
     }
+    
+
+    // async function getItemFromFirestore(id) {
+    //     try {
+    //         const itemRef = doc(collection(db, "items"), id);
+    //         const unsubscribe = onSnapshot(itemRef, (querySnapshot) => {
+    //             let item = null;
+    //             querySnapshot.forEach((doc) => {
+    //                 item = {
+    //                     id: doc.id,
+    //                     ...doc.data(),
+    //                 };
+    //             });
+    //             // Do something with the item here
+    //             console.log(item);
+    //         });
+    
+    //         // You can unsubscribe from the snapshot listener if you no longer need updates
+    //         // unsubscribe();
+    
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }
+    
 
     const deleteFunc = async (id) => {
         const userId = await getUserAsync();
@@ -173,8 +198,8 @@ export default function Cart() {
         if (itemSnapshot.exists()) {
             const updatedItems = itemSnapshot.data().item.filter((item) => item.itemId !== id);
             await updateDoc(itemRef, { item: updatedItems });
+            // setListCart(updatedItems)
             Alert.alert('Item successfully deleted!');
-            setListCart(updatedItems)
         } else {
             console.log('Cart not found');
         }
@@ -282,7 +307,7 @@ const styles = StyleSheet.create({
     },
     box: {
         width: 350,
-        height: 250,
+        height: 260,
         backgroundColor: 'white',
         borderRadius: 10,
         shadowColor: '#000',
@@ -352,7 +377,7 @@ const styles = StyleSheet.create({
     },
 
     description: {
-        width: 180,
+        width: 200,
         fontSize: 16,
         fontWeight: "300"
     },
@@ -404,7 +429,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent:"center",
+        justifyContent: "center",
         columnGap: 10,
 
     },
@@ -465,11 +490,11 @@ const styles = StyleSheet.create({
         fontSize: 30
     },
 
-totalPrice:{
-    color:"#009687", 
-    fontSize:16, 
-    fontWeight:"500"
-}
+    totalPrice: {
+        color: "#009687",
+        fontSize: 16,
+        fontWeight: "500"
+    }
 
 
 });
