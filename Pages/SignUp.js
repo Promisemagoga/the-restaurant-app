@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '../Config/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ImageBackground } from 'react-native';
 
 
 export default function SignUp({setIsAuth}) {
@@ -36,51 +37,84 @@ export default function SignUp({setIsAuth}) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.loginContainer}>
-                <Text style={styles.signIn}>SignUp</Text>
-                <Image
-                    source={require("../assets/login.png")}
-                />
-                <View style={styles.form}>
-                    <TextInput
-                        placeholder='Enter email...'
-                        style={styles.textInput}
-                        onChangeText={(event) => setEmail(event)}
-                    />
-                    <TextInput
-                        placeholder='Enter password...'
-                        style={styles.textInput}
-                        onChangeText={(event) => setPassword(event)}
+        <ImageBackground source={require("../assets/loginbg.jpg")} style={styles.bg}>
+                <View style={styles.backgroundColorCont}>
+                    <View style={styles.form}>
+                        <Text style={styles.signIn}>SignUp</Text>
 
+                        <TextInput
+                            placeholder='Enter email...'
+                            placeholderTextColor='#fff'
+                            style={styles.textInput}
+                            onChangeText={(event) => setEmail(event)}
+                        />
+                        <TextInput
+                            placeholder='Enter password...'
+                            style={styles.textInput}
+                            onChangeText={(event) => setPassword(event)}
+                            placeholderTextColor='#fff'
 
-                    />
+                        />
+                        <TouchableOpacity style={styles.signInBtn} onPress={register}>
+                            <Text style={styles.signInBtnText}>REGISTER</Text>
+                        </TouchableOpacity>
+                        <Text style={styles.newMember}>Do you have an account? <Text style={styles.span} onPress={() => navigation.navigate("SignIn")}>Login</Text></Text>
+                    </View>
                 </View>
-                <TouchableOpacity style={styles.signInBtn} onPress={register}>
-                    <Text style={styles.signInBtnText}>SignUp</Text>
-                </TouchableOpacity>
-                <Text style={styles.newMember}>Already have an account? <Text style={styles.span} onPress={() => navigation.navigate("SignIn")}>signIn</Text></Text>
-            </View>
-        </SafeAreaView>
+        </ImageBackground>
+    
+    </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
         justifyContent: 'center',
+
+    },
+
+    bg: {
+        flex: 1,
+        resizeMode: 'cover',
+    },
+
+    backgroundColorCont: {
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        // backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        height: "100%",
+
     },
 
     textInput: {
-        borderBottomWidth: 1,
-        width: 300
+        borderWidth: 1,
+        borderColor: "#FFFFFF",
+        height: 50,
+        width: 300,
+        borderRadius: 5,
+        paddingLeft: 5,
+        color: "#fff",
+        fontSize: 20
+
     },
 
     form: {
+        // backgroundColor: "#fff",
         display: "flex",
         flexDirection: "column",
-        rowGap: 30
+        width: "90%",
+        height: 400,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 20,
+        marginLeft: "auto",
+        marginRight: "auto",
+        marginTop: "auto",
+        marginBottom: "auto",
+        rowGap: 30,
+        backgroundColor: 'rgba(30, 30, 30, 0.7)',
+        borderRadius: 20,
+        // blurRadius: 30,
     },
 
     loginContainer: {
@@ -98,7 +132,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fea70d',
         width: 230,
         height: 40,
-        borderRadius: 30
+        borderRadius: 5
 
     },
 
@@ -109,8 +143,9 @@ const styles = StyleSheet.create({
     },
 
     signIn: {
+        color: "#fff",
         textAlign: "center",
-        fontSize: 48,
+        fontSize: 38,
         fontWeight: "700",
 
     },
@@ -120,7 +155,8 @@ const styles = StyleSheet.create({
     },
 
     newMember: {
-        fontSize: 19
+        fontSize: 18,
+        color: "#fff"
     }
 
 });

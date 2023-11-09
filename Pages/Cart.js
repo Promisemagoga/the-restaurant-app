@@ -251,12 +251,12 @@ export default function Cart() {
                 <View style={styles.checkoutContainer}>
                     <Text style={styles.heading}>Bill Details</Text>
                     <View style={styles.checkOutContent}>
-                        <Text>Total</Text>
-                        <Text>R{totalPrice}</Text>
+                        <Text style={styles.description}>Total</Text>
+                        <Text style={styles.totalPrice}>R{totalPrice}</Text>
                     </View>
                     <View style={styles.checkOutContent}>
-                        <Text>Delivery Charge</Text>
-                        <Text>R0</Text>
+                        <Text style={styles.description}>Delivery Charge</Text>
+                        <Text style={styles.totalPrice}>R0</Text>
                     </View>
                     <View style={styles.hr}></View>
                 </View>
@@ -463,7 +463,13 @@ const styles = StyleSheet.create({
     },
     divider: {
         fontSize: 30
-    }
+    },
+
+totalPrice:{
+    color:"#009687", 
+    fontSize:16, 
+    fontWeight:"500"
+}
 
 
 });

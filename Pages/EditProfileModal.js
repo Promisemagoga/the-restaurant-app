@@ -95,7 +95,7 @@ export default function EditProfileModal({ setOpenModal, updateUserInfo }) {
                         value={phoneNumber}
 
                     />
-                    <View>
+                    {/* <View>
                         <Text style={styles.cardTitle}>Card Details</Text>
                         <View style={styles.cardForm}>
                             <TextInput
@@ -125,7 +125,7 @@ export default function EditProfileModal({ setOpenModal, updateUserInfo }) {
                                 />
                             </View>
                         </View>
-                    </View>
+                    </View> */}
                 </View>
                 <TouchableOpacity style={styles.signInBtn} onPress={updateData}>
                     <Text style={styles.signInBtnText}>Save</Text>

@@ -1,4 +1,4 @@
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import BottomNav from '../Components/BottomNav'
@@ -55,106 +55,53 @@ export default function UserPage() {
         setOpenModal(true)
     }
 
-    // if (!user) return (
-    //     <View style={styles.container}>
-    //         <Text>Loading</Text>
-    //     </View>
-    // )
 
     return (
         <>
             <SafeAreaView style={styles.container}>
                 <ScrollView style={styles.ScrollView}>
-                    <ImageBackground source={require('../assets/french-fries.jpg')} style={styles.banner}>
+                    <ImageBackground source={require('../assets/loginbg2.jpg')} style={styles.banner}>
+                        <View style={styles.bannerCon}>
+
+                        </View>
                     </ImageBackground>
+
+                    <View style={styles.profileTop}>
+                        <Image source={require("../assets/ppic.png")} style={styles.profilePic} />
+                    </View>
                     {user.map((user) => (
-                        <View style={styles.profileTop}>
-                            <Image source={require("../assets/Me.jpg")} style={styles.profilePic} />
-                            <View style={styles.topContent}>
-                                <Text style={{ fontSize: 23, fontWeight: "bold" }}>{user.name} {user.surname}</Text>
-                                <View style={styles.detailSection}>
-                                    <MaterialCommunityIcons name='email' size={25} color={"#fea70d"} />
-                                    <Text style={{ fontSize: 16 }}>{user.userEmail}</Text>
-                                </View>
-                                <View style={styles.detailSection}>
-                                    <MaterialCommunityIcons name='phone' size={25} color={"#fea70d"} />
-                                    <Text style={{ fontSize: 16 }}>{user.phoneNumber}</Text>
-                                </View>
+                        <View style={styles.profileDetails}>
+                            <View style={{ display: "flex", flexDirection: "row", columnGap: 20, alignItems: "center",paddingLeft:20 }}>
+                                <MaterialCommunityIcons name='account' size={45} color={"#009687"} onPress={() => navigation.navigate("user")} />
+                                <Text style={{ fontSize: 16, fontWeight: "400" }}>{user.name} {user.surname}</Text>
+                                <View style={styles.horizontalLine} />
                             </View>
-                            <MaterialCommunityIcons name='square-edit-outline' size={30} color={"#fea70d"} onPress={() => modal(user)} />
+                            <View style={styles.horizontalLine} />
+                            <View style={{ display: "flex", flexDirection: "row", columnGap: 20, alignItems: "center",paddingLeft:20 }}>
+                                <MaterialCommunityIcons name='email' size={45} color={"#009687"} />
+                                <Text style={{ fontSize: 16 }}>{user.userEmail}</Text>
+                            </View>
+                            <View style={styles.horizontalLine} />
+                            <View style={{ display: "flex", flexDirection: "row", columnGap: 20, alignItems: "center",paddingLeft:20 }}>
+                                <MaterialCommunityIcons name='phone' size={45} color={"#009687"} />
+                                <Text style={{ fontSize: 16 }}>{user.phoneNumber}</Text>
+                            </View>
+                            <View style={styles.horizontalLine} />
+                            <View style={{ display: "flex", flexDirection: "row", columnGap: 20, alignItems: "center", paddingLeft:20,paddingLeft:20 }}>
+                                <MaterialCommunityIcons name='map-marker' size={45} color={"#009687"} />
+                                <Text style={{ fontSize: 16 }}>{user.address}</Text>
+                            </View>
+                            <View style={styles.horizontalLine} />
+                            <View style={{ display: "flex", flexDirection: "row", columnGap: 20, alignItems: "center",paddingLeft:20 }}>
+                                <MaterialCommunityIcons name='sticker-check-outline' size={45} color={"#009687"} />
+                                <Text style={{ fontSize: 16 }}>My Orders</Text>
+                            </View>
+                            <View style={styles.horizontalLine} />
+                            <TouchableOpacity style={styles.signInBtn} onPress={() => modal(user)}>
+                                <Text style={styles.signInBtnText}>Edit Profile</Text>
+                            </TouchableOpacity>
                         </View>
                     ))}
-                    <View style={styles.box}>
-                        <View style={styles.OrdersDetail}>
-                            <MaterialCommunityIcons name='sticker-check-outline' size={30} color={"#fff"} style={styles.profileIcons} />
-                            <Text>My Order</Text>
-                        </View>
-                        <View style={styles.OrdersDetail}>
-                            <MaterialCommunityIcons name='heart' size={30} color={"#fff"} style={styles.profileIcons} />
-                            <Text>My Favourites</Text>
-                        </View>
-                        <View style={styles.OrdersDetail}>
-                            <MaterialCommunityIcons name='clipboard-arrow-left' size={30} color={"#fff"} style={styles.profileIcons} />
-                            <Text>My Order</Text>
-                        </View>
-                    </View>
-                    <Image source={require("../assets/card.webp")} style={styles.card}/>
-                    {/* <View style={styles.profileBottom}>
-                        <View style={styles.detailbottomContSection}>
-                            <MaterialCommunityIcons name='trophy-award' size={45} color={"#7D7463"} />
-                            <View>
-                                <Text style={styles.heading}>Rewards</Text>
-                                <Text style={styles.text}>Get Exciting Rewards</Text>
-                            </View>
-                        </View>
-                        <MaterialCommunityIcons name='greater-than' size={25} style={styles.heading} />
-                    </View>
-                    <View style={styles.horizontalLine} />
-
-                    <View style={styles.profileBottom}>
-                        <View style={styles.detailbottomContSection}>
-                            <MaterialCommunityIcons name='sticker-check-outline' size={45} color={"#7D7463"} />
-                            <View>
-                                <Text style={styles.heading}>Orders</Text>
-                                <Text style={styles.text}>Get Exciting Rewards</Text>
-                            </View>
-                        </View>
-                        <MaterialCommunityIcons name='greater-than' size={25} style={styles.heading} />
-                    </View>
-                    <View style={styles.horizontalLine} />
-                    <View style={styles.profileBottom}>
-                        <View style={styles.detailbottomContSection}>
-                            <MaterialCommunityIcons name='map-marker' size={45} color={"#7D7463"} />
-                            <View>
-                                <Text style={styles.heading}>Address</Text>
-                                <Text style={styles.text}>Get Exciting Rewards</Text>
-                            </View>
-                        </View>
-                        <MaterialCommunityIcons name='greater-than' size={25} style={styles.heading} />
-                    </View>
-                    <View style={styles.horizontalLine} />
-                    <View style={styles.profileBottom}>
-                        <View style={styles.detailbottomContSection}>
-                            <MaterialCommunityIcons name='wallet' size={45} color={"#7D7463"} />
-                            <View>
-                                <Text style={styles.heading}>Wallet</Text>
-                                <Text style={styles.text}>Get Exciting Rewards</Text>
-                            </View>
-                        </View>
-                        <MaterialCommunityIcons name='greater-than' size={25} style={styles.heading} />
-                    </View>
-                    <View style={styles.horizontalLine} />
-                    <View style={styles.profileBottom}>
-                        <View style={styles.detailbottomContSection}>
-                            <MaterialCommunityIcons name='bell' size={45} color={"#7D7463"} />
-                            <View>
-                                <Text style={styles.heading}>Notification</Text>
-                                <Text style={styles.text}>Get Exciting Rewards</Text>
-                            </View>
-                        </View>
-                        <MaterialCommunityIcons name='greater-than' size={25} style={styles.heading} />
-                    </View>
-                    <View style={styles.horizontalLine} /> */}
                 </ScrollView>
                 <BottomNav />
             </SafeAreaView>
@@ -171,9 +118,36 @@ const styles = StyleSheet.create({
 
     },
 
+    signInBtn: {
+        display: "flex",
+        flexDirection: "row-reverse",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: '#fea70d',
+        width: 230,
+        height: 50,
+        borderRadius: 20,
+        marginTop: 20,
+        marginLeft: "auto",
+        marginRight:"auto"
+
+    },
+
+    signInBtnText: {
+        textAlign: "center",
+        color: "#fff",
+        fontSize: 19
+    },
+
     banner: {
         width: "100%",
-        height: 150,
+        height: 180,
+    },
+
+    bannerCon: {
+        width: "100%",
+        height: 180,
+        backgroundColor: "rgba(0,0,0,0.5)"
     },
     productNav: {
         width: "100%",
@@ -196,7 +170,8 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         zIndex: 10,
         marginTop: -30,
-        marginRight: 20,
+        marginRight: "auto",
+        marginLeft: 20
     },
 
     profileTop: {
@@ -204,6 +179,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         columnGap: 20
+    },
+
+    profileDetails: {
+        marginTop: 50
+
     },
 
     detailSection: {
@@ -277,7 +257,7 @@ const styles = StyleSheet.create({
     },
 
     horizontalLine: {
-        borderBottomColor: '#445069',
+        borderBottomColor: '#7D7463"',
         borderBottomWidth: 1,
         marginVertical: 10,
     },
@@ -301,10 +281,10 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
 
-    card:{
+    card: {
         marginLeft: "auto",
         marginRight: "auto",
         width: 250,
-        height:170
+        height: 170
     }
 })
