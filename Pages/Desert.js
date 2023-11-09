@@ -80,8 +80,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: "#fff"
     },
-    box: {
-        width: 350,
+     box: {
+        width: "98%",
         height: 230,
         backgroundColor: 'white',
         borderRadius: 10,
@@ -93,8 +93,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
-        marginTop: 20,
-        marginBottom: 20,
+        margin: 5,
         padding: 20
     },
     ScrollView: {
@@ -137,7 +136,7 @@ const styles = StyleSheet.create({
     },
     img: {
         width: "50%",
-        height: 120,
+        height: 100,
         objectFit: "contain",
         borderRadius: 10
     },

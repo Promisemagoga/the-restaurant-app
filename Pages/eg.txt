@@ -1,238 +1,451 @@
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import Navbar from '../Components/Navbar';
-import Carousel from 'react-native-snap-carousel';
-import carouselData from '../carouselData';
-import BottomNav from '../Components/BottomNav';
+import { ScrollView } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Tab } from '@rneui/themed';
+import { collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where,setDoc,addDoc } from 'firebase/firestore';
+import { db } from '../Config/firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRoute } from '@react-navigation/native';
+import { useStripe } from '@stripe/stripe-react-native';
+
+export default function Cart() {
+    const [listCart, setListCart] = useState([])
+    const navigation = useNavigation()
+    const [totalPrice, setTotalPrice] = useState(0)
 
 
+    const { initPaymentSheet, presentPaymentSheet } = useStripe();
+    const route = useRoute()
 
+    async function makePayment() {
+        const amount = Math.floor(parseInt(totalPrice) * 100)
+        const paymentIntet = await fetchpaymentIntent(amount);
+        console.log("paymentIntet:", paymentIntet);
+        await onCheckout(paymentIntet)
+        const userId = await getUserAsync();
+        if (userId !== null) {
+            try {
+                var pendingOrders = null
+                const snapshot = await getDocs(collection(db, "orders"));
+                if (snapshot.docs.length > 0) {
+                    var pOrders = [];
+                    snapshot.forEach((doc) => {
+                        pOrders.push(doc.data())
+                    })
 
-export default function Home({ setIsAuth }) {
+                    const myItem = {
+                        itemId: listCart,
+                        totalPrice: totalPrice
+                    }
+                    pOrders[0].item.push(myItem)
+                    const docRef = await setDoc(doc(db, "orders", userId), pOrders[0])
+                } else {
+                    const myItem = {
+                        item: [{
+                            itemId: listCart,
 
-  const [authStatus, setAuthStatus] = useState(true);
-  const [index, setIndex] = React.useState(0);
-  const navigation = useNavigation()
-  useEffect(() => {
-    if (!authStatus) {
-      setIsAuth(false)
+                        }]
+                    }
+                    pendingOrders = myItem;
+                    await setDoc(doc(db, "orders", userId), pendingOrders);
+                }
+                Alert.alert("Successfully ordered");
+                pOrders = []
+                setListCart([])
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            console.log("No user");
+        }
+
     }
-  }, [authStatus])
-  return (
-    <SafeAreaView style={styles.container}>
-      <Navbar />
-      <ScrollView style={styles.homeCont}>
-      <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 20, color: "#7D7C7C" }}>Categories</Text>
-        <View style={{ height: 150 }}>
-          <ScrollView horizontal>
-            <Tab containerStyle={{ flexDirection: 'row', flex: 1 }} value={index} onChange={setIndex} dense
-            indicatorStyle={{
-              backgroundColor: '#FF9209',
-              height: 3,
-            }}
-            >
-              <Tab.Item key="cat1">
-                <TouchableOpacity style={styles.categoryTab} onPress={() => navigation.navigate("cat1")}>
-                  <Image source={require("../assets/logo.png")} style={{ width: "100%", height: 60 }} />
-                  <Text style={{ fontSize: 14, fontWeight: "bold", color: "#000" }}>Burgers</Text>
-                </TouchableOpacity>
-              </Tab.Item>
-              <Tab.Item key="cat2"  >
-                <TouchableOpacity style={styles.categoryTab} onPress={() => navigation.navigate("cat2")}>
-                  <Image source={require("../assets/3burgers-removebg-preview.png")} style={{ width: "100%", height: 60 }} />
-                  <Text style={{ fontSize: 14, fontWeight: "bold", color: "#000" }}>Sharing</Text>
-                </TouchableOpacity>
-              </Tab.Item>
-              <Tab.Item key="cat3">
-                <TouchableOpacity style={styles.categoryTab}  onPress={() => navigation.navigate("cat3")}>
-                  <Image source={require("../assets/drink.png")} style={{ width: "100%", height: 90 }} />
-                  <Text style={{ fontSize: 14, fontWeight: "bold",color: "#000" }}>Beverages</Text>
-                </TouchableOpacity>
-              </Tab.Item>
-              <Tab.Item key="cat4">
-                <TouchableOpacity style={styles.categoryTab}  onPress={() => navigation.navigate("cat4")}>
-                  <Image source={require("../assets/iceCream3-removebg-preview.png")} style={{ width: "100%", height: 100 }} />
-                  <Text style={{ fontSize: 15, fontWeight: "bold", color: "#000" }}>Dessert</Text>
-                </TouchableOpacity>
-              </Tab.Item>
-              <Tab.Item key="cat5">
-                <TouchableOpacity style={styles.categoryTab}  onPress={() => navigation.navigate("cat5")}>
-                  <Image source={require("../assets/fries4.jpg")} style={{ width: "70%", height: 77 }} />
-                  <Text style={{ fontSize: 15, fontWeight: "bold", color: "#000" }}>Sides</Text>
-                </TouchableOpacity>
-              </Tab.Item>
-              <Tab.Item key="cat6" >
-                <TouchableOpacity style={styles.categoryTab} onPress={() => navigation.navigate("cat6")}>
-                  <Image source={require("../assets/kids-meal.png")} style={{ width: "100%", height: 70 }} />
-                  <Text style={{ fontSize: 15, fontWeight: "bold", color: "#000" }}>Kiddies</Text>
-                </TouchableOpacity>
-              </Tab.Item>
-            </Tab>
-          </ScrollView>
-        </View>
 
 
-        {/* <View style={styles.catCont}>
-          <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 20, color: "#7D7C7C" }}>Categories</Text>
-          <View style={styles.categories}>
-            <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("cat1")}>
-              <View style={styles.categoryCont}>
-                <Image source={require("../assets/logo.png")} style={{ width: "100%", height: 60 }} />
-                <Text style={{ fontSize: 14, fontWeight: "bold", marginBottom: 20, color: "#fff" }}>Burgers</Text>
 
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("cat2")}>
-              <View style={styles.categoryCont}>
-                <Image source={require("../assets/sharing.png")} style={{ width: "100%", height: 70, position:"absolute",zIndex:10, top: -2 }} />
-                <Text style={{ fontSize: 14, fontWeight: "500", color: "#fff", zIndex:20,marginTop:70 }}>Sharing</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("cat3")}>
-              <View style={styles.categoryCont}>
-                <Image source={require("../assets/cat2.png")} style={{ width: "70%", height: 70 }} />
-                <Text style={{ fontSize: 14, fontWeight: "500", marginBottom: 20, color: "#fff" }}>Bevarages</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("cat4")}>
-              <View style={styles.categoryCont}>
-                <Image source={require("../assets/938063.png")} style={{ width: "70%", height: 70 }} />
-                <Text style={{ fontSize: 15, fontWeight: "500", marginBottom: 20, color: "#fff" }}>Dessert</Text>
-              </View>
-            </TouchableOpacity >
-            <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("cat5")}>
-              <View style={styles.categoryCont}>
-                <Image source={require("../assets/friess.png")} style={{ width: "60%", height: 60 }} />
-                <Text style={{ fontSize: 15, fontWeight: "500", marginBottom: 20, color: "#fff" }}>Sides</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.item} onPress={() => navigation.navigate("cat6")}>
-              <View style={styles.categoryCont}>
-                <Image source={require("../assets/9097136.png")} style={{ width: "70%", height: 60 }} />
-                <Text style={{ fontSize: 15, fontWeight: "500", marginBottom: 20, color: "#fff" }}>Kiddies</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View> */}
-        <View style={styles.offersMainCont}>
-          <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 20, color: "#7D7C7C" }}>Offers for you</Text>
-          <View style={styles.scrollCour}>
-            <Carousel
-              data={carouselData}
-              renderItem={({ item, index }) => {
-                return (
-                  <View style={styles.carouselContainer}>
-                    <Image source={item.img} style={{ width: "100%", height: 250 }} />
-                    <Text style={{ color: "#fea70d" }}>{item.name}</Text>
-                    <Text style={{ width: 200 }}>{item.description}</Text>
-                    <Text style={{ color: "#009687" }}>{item.offer}</Text>
-                  </View>
-                )
-              }}
-              sliderWidth={350}
-              itemWidth={320}
-              autoplay={true}
-              loop={true}
-              autoplayInterval={3000}
-            />
-          </View>
-        </View>
-      </ScrollView>
-      <BottomNav setAuthStatus={setAuthStatus} />
-    </SafeAreaView>
-  )
+
+    const fetchpaymentIntent = async (amount) => {
+        const url = 'https://the-resturant-backend.onrender.com/payment'
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    amount: amount
+                })
+
+            })
+            const data = await response.json();
+            return data
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const onCheckout = async (paymentIntent) => {
+        console.log("paymentIntent:",paymentIntent);
+        const { error: paymentSheetError } = await initPaymentSheet({
+            merchantDisplayName: 'Example, Inc.',
+            paymentIntentClientSecret: paymentIntent.paymentIntent,
+            defaultBillingDetails: {
+                name: 'Jane Doe',
+            },
+        });
+        if (paymentSheetError) {
+            Alert.alert('Something went wrong', paymentSheetError.message);
+            return;
+        }
+
+        const { error: paymentError } = await presentPaymentSheet();
+        if (paymentError) {
+            Alert.alert(`Error code: ${paymentError.code}`, paymentError.message);
+            return;
+        }
+        //make order
+
+    };
+
+    async function getUserAsync() {
+        const signedInUser = await AsyncStorage.getItem("user");
+        const results = signedInUser !== null ? JSON.parse(signedInUser) : null;
+
+        console.log("see user object", results._tokenResponse.localId);
+        return signedInUser !== null ? results._tokenResponse.localId : null
+    }
+
+    useEffect(() => {
+        const fetchCartItems = async () => {
+            setListCart([])
+            const userId = await getUserAsync();
+            const itemRef = doc(collection(db, "carts"), userId);
+            const querrySnapshot = await getDoc(itemRef);
+
+            if (!querrySnapshot.exists()) {
+                console.log("Info not found");
+            } else {
+                var cartItems = [];
+                await Promise.all(querrySnapshot.data().item.map(async (doc) => {
+                    var item = await getItemFromFirestor(doc.itemId);
+                    cartItems.push({ ...item, itemQuantity: 1 });
+                }));
+                let finalPrice = 0
+                cartItems.forEach(cart => {
+                    finalPrice += parseInt(cart.price)
+                });
+                setTotalPrice(finalPrice)
+                setListCart(cartItems)
+            }
+        }
+        fetchCartItems()
+    }, [])
+
+    async function getUserAsync() {
+        const signedInUser = await AsyncStorage.getItem("user");
+        const results = signedInUser !== null ? JSON.parse(signedInUser) : null;
+
+        console.log("see user object", results._tokenResponse.localId);
+        return signedInUser !== null ? results._tokenResponse.localId : null
+    }
+
+    async function getItemFromFirestor(id) {
+        const itemRef = doc(collection(db, "items"), id);
+        const querrySnapshot = await getDoc(itemRef);
+        var item = null
+        if (querrySnapshot.exists()) {
+            // item = querrySnapshot.data();
+            item = {
+                id: querrySnapshot.id,
+                ...querrySnapshot.data(),
+            }
+        }
+        return item
+    }
+
+    const deleteFunc = async (id) => {
+        const userId = await getUserAsync();
+        const itemRef = doc(collection(db, "carts"), userId);
+        const itemSnapshot = await getDoc(itemRef);
+
+        if (itemSnapshot.exists()) {
+            const updatedItems = itemSnapshot.data().item.filter((item) => item.itemId !== id);
+            await updateDoc(itemRef, { item: updatedItems });
+            Alert.alert('Item successfully deleted!');
+            setListCart(updatedItems)
+        } else {
+            console.log('Cart not found');
+        }
+    }
+
+
+    const increaseQuantity = (data, index) => {
+        const items = [...listCart]
+        items[index].itemQuantity += 1
+        setListCart(items)
+
+        let finalPrice = totalPrice
+        finalPrice += parseInt(data.price)
+        setTotalPrice(finalPrice)
+    }
+
+
+    const decreaseQuantity = (data, index) => {
+        const items = [...listCart]
+        let finalPrice = totalPrice
+
+        if (items[index].itemQuantity <= 1) {
+            items[index].itemQuantity = 1
+        } else {
+            items[index].itemQuantity -= 1
+            finalPrice -= parseInt(data.price)
+        }
+        setListCart(items)
+        setTotalPrice(finalPrice)
+
+    }
+
+
+
+
+    if (listCart.length === 0) {
+        return null;
+    }
+
+    return (
+        <SafeAreaView style={styles.container}>
+            <View style={styles.productNav}>
+                <View style={styles.navContent}>
+                    <MaterialCommunityIcons name='account' size={30} color={"#2F2F2F"} style={styles.icon} onPress={() => navigation.navigate("user")} />
+                    <Text style={styles.navHead}>Cart</Text>
+                    <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")} />
+                </View>
+            </View>
+            <ScrollView>
+                {listCart.map((data, index) => (
+                    <View style={styles.ScrollView} key={index}>
+                        <View style={styles.box}>
+                            <View style={styles.contentTop}>
+                                <Text style={styles.description}>{data.description}</Text>
+                                <Image source={{ uri: data.imgUrl }} style={styles.img} />
+                            </View>
+                            <View>
+                                <Text style={styles.price}>R{data.price}</Text>
+                            </View>
+                            <View style={styles.contentBottom}>
+                                <MaterialCommunityIcons name='delete' size={25} color={"#2F2F2F"} style={styles.remove} onPress={() => deleteFunc(data.id)} />
+                                <View style={styles.quantity}>
+                                    <MaterialCommunityIcons name='minus-circle' size={30} color={"#fea70d"} onPress={() => decreaseQuantity(data, index)} />
+                                    <Text style={{ fontSize: 20 }}>{data.itemQuantity}</Text>
+                                    <MaterialCommunityIcons name='plus-circle' size={30} color={"#fea70d"} onPress={() => increaseQuantity(data, index)} />
+                                </View>
+                            </View>
+                        </View>
+                    </View>
+                ))}
+                <View style={styles.checkoutContainer}>
+                    <Text style={styles.heading}>Bill Details</Text>
+                    <View style={styles.checkOutContent}>
+                        <Text>Total</Text>
+                        <Text>R{totalPrice}</Text>
+                    </View>
+                    <View style={styles.checkOutContent}>
+                        <Text>Delivery Charge</Text>
+                        <Text>R0</Text>
+                    </View>
+                    <View style={styles.hr}></View>
+                    <TouchableOpacity style={styles.displayButton}>
+                        <Text style={styles.CheckOuttext}>{listCart.length} <Text style={styles.divider}>|</Text></Text>
+                        <TouchableOpacity style={styles.checkOut} onPress={makePayment}>
+                            <Text style={styles.text} >CheckOut</Text>
+                            <MaterialCommunityIcons name='greater-than' size={30} color={"#fff"} />
+                        </TouchableOpacity>
+                    </TouchableOpacity>
+                </View>
+
+            </ScrollView>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
 
-  homeCont: {
-    marginTop: 100,
-    padding: 10,
-  },
-
-  categories: {
-    width: "100%",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center"
-
-  },
-
-  item: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "30%",
-    height: 100,
-    margin: 6,
-    marginTop: 20,
-    padding: 5,
-  },
-
-  categoryCont: {
-    width: "100%",
-    height: 100,
-    borderRadius: 100,
-    backgroundColor: "#FF9209",
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-
-  catCont: {
-    marginTop: 50,
-  },
-
-  scrollCour: {
-    marginLeft: "auto",
-    marginRight: "auto"
-  },
-  carouselContainer: {
-    display: "flex",
-    flexDirection: "column",
-    width: 320,
-    // height: 200,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    margin: 5,
-    padding: 20
-  },
+    box: {
+        width: 350,
+        height: 250,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        padding: 20
+    },
 
-  offersMainCont: {
-    marginTop: 50,
-    marginBottom: 50
-  },
+    ScrollView: {
+        width: "100%",
+        padding: 20,
+    },
 
-  categoryTab: {
-    width: 100,
-    height: 140,
-    borderWidth: 1,
-    borderColor: "#D8DBE2",
-    borderRadius: 20,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  }
+    productNav: {
+        width: "100%",
+        height: 100,
+        backgroundColor: "#ffffff",
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+
+    },
+
+    navContent: {
+        display: "flex",
+        flexDirection: "row-reverse",
+        marginTop: 20,
+        padding: 10,
+        width: "100%",
+        height: 100,
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+
+    contentTop: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: 20
+
+    },
+
+    navHead: {
+        fontSize: 20,
+        marginLeft: 10,
+        fontWeight: "bold"
+    },
+    img: {
+        width: 150,
+        height: 100,
+        borderRadius: 10
+    },
+
+    contentBottom: {
+        marginTop: "auto",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center"
+    },
+
+    description: {
+        width: 150,
+        fontSize: 18,
+    },
+
+    addBtn: {
+        borderWidth: 1,
+        width: 150,
+        height: 35,
+        borderRadius: 10,
+        borderColor: "#fea70d"
+    },
+
+    addBtnText: {
+        textAlign: "center",
+        marginTop: "auto",
+        marginBottom: "auto",
+        color: "#fea70d"
+    },
+
+    price: {
+        color: "#009687",
+        fontWeight: "bold",
+        fontSize: 22
+    },
+
+    name: {
+        color: "#009687",
+    },
+    quantity: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        columnGap: 10
+    },
+
+    remove: {
+        backgroundColor: "#fea70d",
+        padding: 5,
+        borderRadius: 100
+    },
+
+
+    displayButton: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginTop: 20,
+        backgroundColor: "#fea70d",
+        height: 50
+
+    },
+
+    checkOut: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        columnGap: 10,
+
+    },
+
+    checkOutContent: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 10,
+        padding: 10
+    },
+
+    checkoutContainer: {
+        width: "90%",
+        marginTop: "auto",
+        borderWidth: 1,
+        borderStyle: "dashed",
+        borderColor: '#fea70d',
+        // padding: 10,
+        margin: 20
+    },
+
+    text: {
+        color: "#fff",
+        fontSize: 20
+    },
+
+    CheckOuttext: {
+        color: "#fff",
+        paddingLeft: 10,
+        fontSize: 20
+    },
+
+    heading: {
+        fontSize: 20,
+        paddingLeft: 10,
+        fontWeight: "bold"
+    },
+    divider: {
+        fontSize: 30
+    }
+
 
 });

@@ -79,10 +79,11 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: "whitesmoke"
     },
     box: {
-        width: 350,
-        height: 200,
+        width: "98%",
+        height: 230,
         backgroundColor: 'white',
         borderRadius: 10,
         shadowColor: '#000',
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
-        margin: 10,
+        margin: 5,
         padding: 20
     },
 
@@ -181,7 +182,8 @@ const styles = StyleSheet.create({
 
     name: {
         color: "#009687",
-        fontSize: 20
+        fontSize: 20,
+        width: 150
     },
 
 });

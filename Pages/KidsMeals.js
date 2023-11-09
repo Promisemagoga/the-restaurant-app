@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     box: {
-        width: 350,
-        height: 200,
+        width: "98%",
+        height: 230,
         backgroundColor: 'white',
         borderRadius: 10,
         shadowColor: '#000',
@@ -179,14 +179,16 @@ const styles = StyleSheet.create({
 
     description: {
         width: 150,
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: "200"
     },
 
     name: {
         color: "#009687",
-        fontSize: 18
+        fontSize: 20,
+        width: 160
     },
+
 
 
 });

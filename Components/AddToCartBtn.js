@@ -67,7 +67,7 @@ export default function AddToCartBtn({ idItem }) {
 const styles = StyleSheet.create({
     addBtn: {
         borderWidth: 1,
-        width: 150,
+        width: "50%",
         height: 35,
         borderRadius: 10,
         borderColor: "#fea70d"

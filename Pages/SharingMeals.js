@@ -85,9 +85,10 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: "whitesmoke"
     },
     box: {
-        width: 350,
+        width: "98%",
         height: 200,
         backgroundColor: 'white',
         borderRadius: 10,
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
-        margin: 20,
+        margin: 5,
         padding: 20
     },
 

@@ -48,25 +48,29 @@ export default function Baverages() {
                     <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")} />
                 </View>
             </View>
-            <FlatList
-                data={menu}
-                renderItem={({ item }) => (
-                    <View style={styles.box}>
-                        <View style={styles.contentTop}>
-                            <Text style={styles.description}>{item.description}</Text>
-                            <Image source={{ uri: item.imgUrl }} style={styles.img} />
-                        </View>
-                        <View style={styles.contentBottom}>
-                            <View>
-                                <Text style={styles.price}>R{item.price}</Text>
-                                <Text style={styles.name}>{item.name}</Text>
+            <ScrollView>
+                <View style={styles.ScrollView}>
+                    {
+                        menu.map((items, index) => (
+                            <View style={styles.box}>
+                                <View style={styles.contentTop}>
+                                    <View style={{display:"flex", flexDirection:"column",rowGap: 10}}>
+                                    <Text style={styles.name}>{items.name}</Text>
+                                    <Text style={styles.description}>{items.description}</Text>
+                                    </View>
+                                    <Image source={{uri: items.imgUrl}} style={styles.img} />
+                                </View>
+                                <View style={styles.contentBottom}>
+                    
+                                        <Text style={styles.price}>R{items.price}</Text>
+                              
+                                 <AddToCartBtn idItem={items.id}/>
+                                </View>
                             </View>
-                            <AddToCartBtn idItem={item.id} />
-                        </View>
-                    </View>
-                )}
-                keyExtractor={(item, index) => index.toString()}
-            />
+                        ))
+                    }
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 }
@@ -76,10 +80,11 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: "whitesmoke"
     },
     box: {
-        width: 350,
-        height: 200,
+        width: "98%",
+        height: 230,
         backgroundColor: 'white',
         borderRadius: 10,
         shadowColor: '#000',
@@ -154,6 +159,12 @@ const styles = StyleSheet.create({
         fontWeight: "200"
     },
 
+    name: {
+        color: "#009687",
+        fontSize: 20,
+        width: 150
+    },
+
     
 
     addBtn: {
@@ -177,7 +188,5 @@ const styles = StyleSheet.create({
         fontSize: 22
     },
 
-    name: {
-        color: "#009687",
-    }
+   
 });

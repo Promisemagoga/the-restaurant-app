@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where,setDoc,addDoc } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where, setDoc, addDoc } from 'firebase/firestore';
 import { db } from '../Config/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
@@ -87,7 +87,7 @@ export default function Cart() {
     }
 
     const onCheckout = async (paymentIntent) => {
-        console.log("paymentIntent:",paymentIntent);
+        console.log("paymentIntent:", paymentIntent);
         const { error: paymentSheetError } = await initPaymentSheet({
             merchantDisplayName: 'Example, Inc.',
             paymentIntentClientSecret: paymentIntent.paymentIntent,
@@ -228,7 +228,10 @@ export default function Cart() {
                     <View style={styles.ScrollView} key={index}>
                         <View style={styles.box}>
                             <View style={styles.contentTop}>
-                                <Text style={styles.description}>{data.description}</Text>
+                                <View>
+                                    <Text style={styles.name}>{data.name}</Text>
+                                    <Text style={styles.description}>{data.description}</Text>
+                                </View>
                                 <Image source={{ uri: data.imgUrl }} style={styles.img} />
                             </View>
                             <View>
@@ -256,15 +259,14 @@ export default function Cart() {
                         <Text>R0</Text>
                     </View>
                     <View style={styles.hr}></View>
-                    <TouchableOpacity style={styles.displayButton}>
-                        <Text style={styles.CheckOuttext}>{listCart.length} <Text style={styles.divider}>|</Text></Text>
-                        <TouchableOpacity style={styles.checkOut} onPress={makePayment}>
-                            <Text style={styles.text} >CheckOut</Text>
-                            <MaterialCommunityIcons name='greater-than' size={30} color={"#fff"} />
-                        </TouchableOpacity>
-                    </TouchableOpacity>
                 </View>
-
+                <TouchableOpacity style={styles.displayButton}>
+                    <Text style={styles.CheckOuttext}>{listCart.length} items <Text style={styles.divider}>|</Text></Text>
+                    <TouchableOpacity style={styles.checkOut} onPress={makePayment}>
+                        <Text style={styles.text} >Checkout</Text>
+                        <MaterialCommunityIcons name='greater-than' size={40} color={"#fff"} />
+                    </TouchableOpacity>
+                </TouchableOpacity>
             </ScrollView>
         </SafeAreaView>
     );
@@ -275,6 +277,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: "whitesmoke"
 
     },
     box: {
@@ -334,9 +337,10 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     img: {
-        width: 150,
+        width: 100,
         height: 100,
-        borderRadius: 10
+        borderRadius: 100,
+        objectFit: "contain"
     },
 
     contentBottom: {
@@ -348,8 +352,9 @@ const styles = StyleSheet.create({
     },
 
     description: {
-        width: 150,
-        fontSize: 18,
+        width: 180,
+        fontSize: 16,
+        fontWeight: "300"
     },
 
     addBtn: {
@@ -375,6 +380,9 @@ const styles = StyleSheet.create({
 
     name: {
         color: "#009687",
+        fontWeight: "400",
+        fontSize: 18,
+        marginBottom: 10
     },
     quantity: {
         display: "flex",
@@ -390,21 +398,13 @@ const styles = StyleSheet.create({
     },
 
 
-    displayButton: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginTop: 20,
-        backgroundColor: "#fea70d",
-        height: 50
 
-    },
 
     checkOut: {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
+        justifyContent:"center",
         columnGap: 10,
 
     },
@@ -418,13 +418,30 @@ const styles = StyleSheet.create({
     },
 
     checkoutContainer: {
-        width: "90%",
+        width: 350,
         marginTop: "auto",
         borderWidth: 1,
         borderStyle: "dashed",
         borderColor: '#fea70d',
         // padding: 10,
-        margin: 20
+        margin: 20,
+        borderRadius: 5,
+    },
+
+    displayButton: {
+        width: 350,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginTop: 5,
+        marginBottom: 10,
+        backgroundColor: "#fea70d",
+        height: 70,
+        marginLeft: "auto",
+        marginRight: "auto",
+        padding: 10,
+        borderRadius: 5
     },
 
     text: {
@@ -435,7 +452,8 @@ const styles = StyleSheet.create({
     CheckOuttext: {
         color: "#fff",
         paddingLeft: 10,
-        fontSize: 20
+        fontSize: 20,
+        fontWeight: "bold"
     },
 
     heading: {
