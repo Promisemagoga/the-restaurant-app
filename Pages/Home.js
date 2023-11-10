@@ -100,7 +100,7 @@ export default function Home({ setIsAuth }) {
 
               <TouchableOpacity onPress={() => navigation.navigate("cat3")} style={styles.offersCont}>
                 <View style={{ width: "100%", height: 100 }}>
-                  <Image source={require("../assets/milkshakechoc.png")} style={{ width: "100%", height: 130, objectFit: "contain" }} />
+                  <Image source={require("../assets/milkshakechoc.png")} style={{ width: "80%", height: 130 }} />
                 </View>
                 <Text style={{ color: "#fea70d", fontWeight: "500", fontSize:13, marginTop:"auto" }}>Chocolate Milkshake</Text>
                 {/* <Text>Creamy Chocolate Milkshake</Text> */}
@@ -121,7 +121,6 @@ export default function Home({ setIsAuth }) {
                 </View>
 
                 <Text style={{ color: "#fea70d", fontWeight: "500",fontSize:13, marginTop:"auto"  }}>Cheesy Nuggets</Text>
-                {/* <Text>10 cheesy nuggets</Text> */}
                 <Text style={{ color: "#009687", fontSize: 12, fontWeight: "bold" }}>10% Off Code: 616F77</Text>
 
               </TouchableOpacity>
@@ -213,14 +212,6 @@ const styles = StyleSheet.create({
 
   },
 
-  // offersCont:{
-  //   width: 170, 
-
-  //   height: 300, 
-  //   borderRadius: 20 ,  
-  //   borderColor: "#D8DBE2",
-  //   elevation:2
-  // },
   offersCont: {
 
     width: 170,
@@ -246,7 +237,7 @@ const styles = StyleSheet.create({
   },
 
   categoryTab: {
-    width: 100,
+    width: 130,
     height: 140,
     backgroundColor: 'white',
     borderRadius: 10,
@@ -258,7 +249,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    margin: 5,
+    // margin: 5,
     padding: 8,
     display: "flex",
     flexDirection: "column",
