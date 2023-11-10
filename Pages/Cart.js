@@ -53,7 +53,7 @@ export default function Cart() {
                 }
                 Alert.alert("Successfully ordered");
                 pOrders = []
-                setListCart([])
+                clearCart()
             } catch (error) {
                 console.log(error);
             }
@@ -164,31 +164,8 @@ export default function Cart() {
         }
         return item
     }
-    
 
-    // async function getItemFromFirestore(id) {
-    //     try {
-    //         const itemRef = doc(collection(db, "items"), id);
-    //         const unsubscribe = onSnapshot(itemRef, (querySnapshot) => {
-    //             let item = null;
-    //             querySnapshot.forEach((doc) => {
-    //                 item = {
-    //                     id: doc.id,
-    //                     ...doc.data(),
-    //                 };
-    //             });
-    //             // Do something with the item here
-    //             console.log(item);
-    //         });
-    
-    //         // You can unsubscribe from the snapshot listener if you no longer need updates
-    //         // unsubscribe();
-    
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
-    
+
 
     const deleteFunc = async (id) => {
         const userId = await getUserAsync();
@@ -232,12 +209,29 @@ export default function Cart() {
 
     }
 
+    const clearCart = async () => {
+        try {
+            const userId = await getUserAsync();
+            const itemRef = doc(collection(db, "carts"), userId);
+            await deleteDoc(itemRef);
+            console.log('Cart cleared successfully');
+        } catch (error) {
+            console.error('Error clearing cart:', error);
+        }
+    };
+
+
+
 
 
 
     if (listCart.length === 0) {
-        return null;
+        <SafeAreaView >
+
+        </SafeAreaView>
     }
+
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -248,31 +242,42 @@ export default function Cart() {
                     <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")} />
                 </View>
             </View>
+
             <ScrollView>
-                {listCart.map((data, index) => (
-                    <View style={styles.ScrollView} key={index}>
-                        <View style={styles.box}>
-                            <View style={styles.contentTop}>
-                                <View>
-                                    <Text style={styles.name}>{data.name}</Text>
-                                    <Text style={styles.description}>{data.description}</Text>
-                                </View>
-                                <Image source={{ uri: data.imgUrl }} style={styles.img} />
-                            </View>
-                            <View>
-                                <Text style={styles.price}>R{data.price}</Text>
-                            </View>
-                            <View style={styles.contentBottom}>
-                                <MaterialCommunityIcons name='delete' size={25} color={"#2F2F2F"} style={styles.remove} onPress={() => deleteFunc(data.id)} />
-                                <View style={styles.quantity}>
-                                    <MaterialCommunityIcons name='minus-circle' size={30} color={"#fea70d"} onPress={() => decreaseQuantity(data, index)} />
-                                    <Text style={{ fontSize: 20 }}>{data.itemQuantity}</Text>
-                                    <MaterialCommunityIcons name='plus-circle' size={30} color={"#fea70d"} onPress={() => increaseQuantity(data, index)} />
-                                </View>
-                            </View>
-                        </View>
+                {listCart.length === 0 ?
+                    <View style={{marginTop: 200}}>
+                        <Text style={{ color: "#000" }}>Cart is empty!!!</Text>
                     </View>
-                ))}
+                    :
+                    <>
+                        {listCart.map((data, index) => (
+                            <View style={styles.ScrollView} key={index}>
+                                <View style={styles.box}>
+                                    <View style={styles.contentTop}>
+                                        <View>
+                                            <Text style={styles.name}>{data.name}</Text>
+                                            <Text style={styles.description}>{data.description}</Text>
+                                        </View>
+                                        <Image source={{ uri: data.imgUrl }} style={styles.img} />
+                                    </View>
+                                    <View>
+                                        <Text style={styles.price}>R{data.price}</Text>
+                                    </View>
+                                    <View style={styles.contentBottom}>
+                                        <MaterialCommunityIcons name='delete' size={25} color={"#2F2F2F"} style={styles.remove} onPress={() => deleteFunc(data.id)} />
+                                        <View style={styles.quantity}>
+                                            <MaterialCommunityIcons name='minus-circle' size={30} color={"#fea70d"} onPress={() => decreaseQuantity(data, index)} />
+                                            <Text style={{ fontSize: 20 }}>{data.itemQuantity}</Text>
+                                            <MaterialCommunityIcons name='plus-circle' size={30} color={"#fea70d"} onPress={() => increaseQuantity(data, index)} />
+                                        </View>
+                                    </View>
+                                </View>
+                            </View>
+                        ))}
+                    </>
+                }
+            </ScrollView>
+            <View style={{ display: "flex", flexDirection: "column", marginTop: "auto" }}>
                 <View style={styles.checkoutContainer}>
                     <Text style={styles.heading}>Bill Details</Text>
                     <View style={styles.checkOutContent}>
@@ -292,7 +297,7 @@ export default function Cart() {
                         <MaterialCommunityIcons name='greater-than' size={40} color={"#fff"} />
                     </TouchableOpacity>
                 </TouchableOpacity>
-            </ScrollView>
+            </View>
         </SafeAreaView>
     );
 }
@@ -444,7 +449,7 @@ const styles = StyleSheet.create({
 
     checkoutContainer: {
         width: 350,
-        marginTop: "auto",
+
         borderWidth: 1,
         borderStyle: "dashed",
         borderColor: '#fea70d',
