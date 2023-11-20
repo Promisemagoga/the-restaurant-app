@@ -42,7 +42,7 @@ export default function Sides() {
         <SafeAreaView style={styles.container}>
             <View style={styles.productNav}>
                 <View style={styles.navContent}>
-                    <MaterialCommunityIcons name='account' size={30} color={"#2F2F2F"} style={styles.icon} onPress={() => navigation.navigate("user")} />
+                    <MaterialCommunityIcons name='cart-variant' size={28} color={"#2F2F2F"} style={styles.icon} onPress={() => navigation.navigate("cart")} />
                     <Text style={styles.navHead}>Adds On</Text>
                     <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")} />
                 </View>
@@ -52,20 +52,20 @@ export default function Sides() {
                     {
                         menu.map((items, index) => (
                             <View style={styles.box}>
-                            <View style={styles.contentTop}>
-                                <View style={{display:"flex", flexDirection:"column",rowGap: 10}}>
-                                <Text style={styles.name}>{items.name}</Text>
-                                <Text style={styles.description}>{items.description}</Text>
+                                <View style={styles.contentTop}>
+                                    <View style={{ display: "flex", flexDirection: "column", rowGap: 10 }}>
+                                        <Text style={styles.name}>{items.name}</Text>
+                                        <Text style={styles.description}>{items.description}</Text>
+                                    </View>
+                                    <Image source={{ uri: items.imgUrl }} style={styles.img} />
                                 </View>
-                                <Image source={{uri: items.imgUrl}} style={styles.img} />
-                            </View>
-                            <View style={styles.contentBottom}>
-                
+                                <View style={styles.contentBottom}>
+
                                     <Text style={styles.price}>R{items.price}</Text>
-                          
-                             <AddToCartBtn idItem={items.id}/>
+
+                                    <AddToCartBtn idItem={items.id} />
+                                </View>
                             </View>
-                        </View>
                         ))
                     }
                 </View>

@@ -41,7 +41,7 @@ export default function Desert() {
         <SafeAreaView style={styles.container}>
             <View style={styles.productNav}>
                 <View style={styles.navContent}>
-                    <MaterialCommunityIcons name='account' size={30} color={"#2F2F2F"} style={styles.icon} onPress={() => navigation.navigate("user")} />
+                    <MaterialCommunityIcons name='cart-variant' size={28} color={"#2F2F2F"} style={styles.icon} onPress={() => navigation.navigate("cart")} />
                     <Text style={styles.navHead}>Dessert</Text>
                     <MaterialCommunityIcons name='arrow-left' size={30} color={"#000000"} onPress={() => navigation.navigate("home")} />
                 </View>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: "#fff"
     },
-     box: {
+    box: {
         width: "98%",
         height: 230,
         backgroundColor: 'white',
