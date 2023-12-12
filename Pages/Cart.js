@@ -286,7 +286,7 @@ export default function Cart() {
                     </View>
                     <View style={styles.checkOutContent}>
                         <Text style={styles.description}>Delivery Charge</Text>
-                        <Text style={styles.totalPrice}>{deliveryCharge}</Text>
+                        <Text style={styles.totalPrice}>R{deliveryCharge}</Text>
                     </View>
                     <View style={styles.hr}></View>
                 </View>
