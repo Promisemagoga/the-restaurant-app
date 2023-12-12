@@ -13,14 +13,14 @@ import { useStripe } from '@stripe/stripe-react-native';
 export default function Cart() {
     const [listCart, setListCart] = useState([])
     const navigation = useNavigation()
-    const [totalPrice, setTotalPrice] = useState(0)
+    const [itemsPrice, setItemsPrice] = useState(0)
     const deliveryCharge = 5
-
+    const totalPrice = itemsPrice + deliveryCharge
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
     const route = useRoute()
 
     async function makePayment() {
-        const amount = Math.floor(parseInt(totalPrice + deliveryCharge) * 100)
+        const amount = Math.floor(parseInt(totalPrice) * 100)
         const paymentIntet = await fetchpaymentIntent(amount);
         console.log("paymentIntet:", paymentIntet);
         await onCheckout(paymentIntet)
@@ -136,7 +136,7 @@ export default function Cart() {
                 cartItems.forEach(cart => {
                     finalPrice += parseInt(cart.price)
                 });
-                setTotalPrice(finalPrice)
+                setItemsPrice(finalPrice)
                 setListCart(cartItems)
             }
         }
@@ -190,7 +190,7 @@ export default function Cart() {
 
         let finalPrice = totalPrice
         finalPrice += parseInt(data.price)
-        setTotalPrice(finalPrice)
+        setItemsPrice(finalPrice)
     }
 
 
@@ -205,7 +205,7 @@ export default function Cart() {
             finalPrice -= parseInt(data.price)
         }
         setListCart(items)
-        setTotalPrice(finalPrice)
+        setItemsPrice(finalPrice)
 
     }
 
@@ -281,12 +281,16 @@ export default function Cart() {
                 <View style={styles.checkoutContainer}>
                     <Text style={styles.heading}>Bill Details</Text>
                     <View style={styles.checkOutContent}>
-                        <Text style={styles.description}>Total</Text>
-                        <Text style={styles.totalPrice}>R{totalPrice}</Text>
+                        <Text style={styles.description}>Items Price</Text>
+                        <Text style={styles.totalPrice}>R{itemsPrice}</Text>
                     </View>
                     <View style={styles.checkOutContent}>
                         <Text style={styles.description}>Delivery Charge</Text>
                         <Text style={styles.totalPrice}>R{deliveryCharge}</Text>
+                    </View>
+                    <View style={styles.checkOutContent}>
+                        <Text style={styles.description}>Total Price</Text>
+                        <Text style={styles.totalPrice}>R{totalPrice}</Text>
                     </View>
                     <View style={styles.hr}></View>
                 </View>
