@@ -20,49 +20,47 @@ export default function Cart() {
     const route = useRoute()
 
     async function makePayment() {
-        const amount = Math.floor(parseInt(totalPrice) * 100)
-        const paymentIntet = await fetchpaymentIntent(amount);
-        console.log("paymentIntet:", paymentIntet);
-        await onCheckout(paymentIntet)
-        const userId = await getUserAsync();
-        if (userId !== null) {
-            try {
-                var pendingOrders = null
-                const snapshot = await getDocs(collection(db, "orders"));
-                if (snapshot.docs.length > 0) {
-                    var pOrders = [];
-                    snapshot.forEach((doc) => {
-                        pOrders.push(doc.data())
-                    })
-
-                    const myItem = {
-                        itemId: listCart,
-                        totalPrice: totalPrice
-                    }
-                    pOrders[0].item.push(myItem)
-                    const docRef = await setDoc(doc(db, "orders", userId), pOrders[0])
-                } else {
-                    const myItem = {
-                        item: [{
+        const amount = Math.floor(parseInt(totalPrice) * 100);
+        const paymentIntent = await fetchPaymentIntent(amount);
+        console.log("paymentIntent:", paymentIntent);
+        try {
+            await onCheckout(paymentIntent);
+            const userId = await getUserAsync();
+            if (userId !== null) {
+                try {
+                    const snapshot = await getDocs(collection(db, "orders"));
+                    if (snapshot.docs.length > 0) {
+                        const pOrders = snapshot.docs[0].data().item || [];
+                        const myItem = {
                             itemId: listCart,
-
-                        }]
+                            totalPrice: totalPrice
+                        };
+                        pOrders.push(myItem);
+                        await setDoc(doc(db, "orders", userId), { item: pOrders });
+                    } else {
+                        const myItem = {
+                            item: [{
+                                itemId: listCart,
+                            }]
+                        };
+                        await setDoc(doc(db, "orders", userId), myItem);
                     }
-                    pendingOrders = myItem;
-                    await setDoc(doc(db, "orders", userId), pendingOrders);
+                    Alert.alert("Successfully ordered");
+                    clearCart();
+                } catch (error) {
+                    console.log(error);
+                    await rollbackPayment(paymentIntent);
+                    Alert.alert("Failed to place the order");
                 }
-                Alert.alert("Successfully ordered");
-                pOrders = []
-                clearCart()
-            } catch (error) {
-                console.log(error);
+            } else {
+                console.log("No user");
             }
-        } else {
-            console.log("No user");
+        } catch (error) {
+            console.log(error);
+            Alert.alert("Payment was canceled");
         }
-
     }
-
+    
 
 
 
