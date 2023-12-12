@@ -188,7 +188,7 @@ export default function Cart() {
         items[index].itemQuantity += 1
         setListCart(items)
 
-        let finalPrice = totalPrice
+        let finalPrice = itemsPrice
         finalPrice += parseInt(data.price)
         setItemsPrice(finalPrice)
     }
@@ -196,7 +196,7 @@ export default function Cart() {
 
     const decreaseQuantity = (data, index) => {
         const items = [...listCart]
-        let finalPrice = totalPrice
+        let finalPrice = itemsPrice
 
         if (items[index].itemQuantity <= 1) {
             items[index].itemQuantity = 1
