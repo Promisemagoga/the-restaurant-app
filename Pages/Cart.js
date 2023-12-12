@@ -14,13 +14,13 @@ export default function Cart() {
     const [listCart, setListCart] = useState([])
     const navigation = useNavigation()
     const [totalPrice, setTotalPrice] = useState(0)
-
+    const deliveryCharge = 5
 
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
     const route = useRoute()
 
     async function makePayment() {
-        const amount = Math.floor(parseInt(totalPrice) * 100)
+        const amount = Math.floor(parseInt(totalPrice + deliveryCharge) * 100)
         const paymentIntet = await fetchpaymentIntent(amount);
         console.log("paymentIntet:", paymentIntet);
         await onCheckout(paymentIntet)
@@ -245,7 +245,7 @@ export default function Cart() {
 
             <ScrollView>
                 {listCart.length === 0 ?
-                    <View style={{marginTop: 200}}>
+                    <View style={{ marginTop: 200 }}>
                         <Text style={{ color: "#000" }}>Cart is empty!!!</Text>
                     </View>
                     :
@@ -286,7 +286,7 @@ export default function Cart() {
                     </View>
                     <View style={styles.checkOutContent}>
                         <Text style={styles.description}>Delivery Charge</Text>
-                        <Text style={styles.totalPrice}>R0</Text>
+                        <Text style={styles.totalPrice}>{deliveryCharge}</Text>
                     </View>
                     <View style={styles.hr}></View>
                 </View>
