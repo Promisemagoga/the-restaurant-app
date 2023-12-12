@@ -27,39 +27,37 @@ export default function Cart() {
             await onCheckout(paymentIntent);
             const userId = await getUserAsync();
             if (userId !== null) {
-                try {
-                    const snapshot = await getDocs(collection(db, "orders"));
-                    if (snapshot.docs.length > 0) {
-                        const pOrders = snapshot.docs[0].data().item || [];
-                        const myItem = {
+                const snapshot = await getDocs(collection(db, "orders"));
+                if (snapshot.docs.length > 0) {
+                    const pOrders = snapshot.docs[0].data().item || [];
+                    const myItem = {
+                        itemId: listCart,
+                        totalPrice: totalPrice
+                    };
+                    pOrders.push(myItem);
+                    await setDoc(doc(db, "orders", userId), { item: pOrders });
+                } else {
+                    const myItem = {
+                        item: [{
                             itemId: listCart,
-                            totalPrice: totalPrice
-                        };
-                        pOrders.push(myItem);
-                        await setDoc(doc(db, "orders", userId), { item: pOrders });
-                    } else {
-                        const myItem = {
-                            item: [{
-                                itemId: listCart,
-                            }]
-                        };
-                        await setDoc(doc(db, "orders", userId), myItem);
-                    }
-                    Alert.alert("Successfully ordered");
-                    clearCart();
-                } catch (error) {
-                    console.log(error);
-                    await rollbackPayment(paymentIntent);
-                    Alert.alert("Failed to place the order");
+                        }]
+                    };
+                    await setDoc(doc(db, "orders", userId), myItem);
                 }
+                Alert.alert("Successfully ordered");
+                clearCart();
             } else {
                 console.log("No user");
             }
         } catch (error) {
-            console.log(error);
-            Alert.alert("Payment was canceled");
+            if (error.message !== "Payment was canceled") {
+                console.log(error);
+                await rollbackPayment(paymentIntent);
+                Alert.alert("Failed to place the order");
+            }
         }
     }
+    
     
 
 
