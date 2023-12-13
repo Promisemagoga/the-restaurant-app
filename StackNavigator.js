@@ -15,6 +15,7 @@ import UserPage from './Pages/UserPage'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Cart from './Pages/Cart'
 import Payment from './Pages/Payment'
+import Confirmation from './Pages/Confirmation'
 
 
 const Stack = createNativeStackNavigator()
@@ -47,6 +48,8 @@ function StackNavigator() {
                             <Stack.Screen name='cat6' component={KidsMeals} />
                             <Stack.Screen name='cart' component={Cart} />
                             <Stack.Screen name='payment' component={Payment} />
+                            <Stack.Screen name='confirmation' component={Confirmation} />
+
 
 
                         </>

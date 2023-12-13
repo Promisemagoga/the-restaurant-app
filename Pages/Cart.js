@@ -18,7 +18,6 @@ export default function Cart() {
     const totalPrice = itemsPrice + deliveryCharge
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
     const route = useRoute()
-
     async function makePayment() {
         const amount = Math.floor(parseInt(totalPrice) * 100);
         const paymentIntent = await fetchPaymentIntent(amount);
@@ -46,8 +45,10 @@ export default function Cart() {
                 }
                 Alert.alert("Successfully ordered");
                 clearCart();
+                navigation.navigate('confirmation')
             } else {
-                console.log("No user");
+                Alert.alert("Failed to place the order");
+
             }
         } catch (error) {
             if (error.message !== "Payment was canceled") {
