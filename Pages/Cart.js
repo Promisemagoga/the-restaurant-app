@@ -20,7 +20,7 @@ export default function Cart() {
     const route = useRoute()
     async function makePayment() {
         const amount = Math.floor(parseInt(totalPrice) * 100);
-        const paymentIntent = await fetchPaymentIntent(amount);
+        const paymentIntent = await fetchpaymentIntent(amount);
         console.log("paymentIntent:", paymentIntent);
         try {
             await onCheckout(paymentIntent);
