@@ -8,7 +8,7 @@ const Confirmation = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <view style={{ display: 'flex', flexDirection: 'column', rowGap: '30px' }}>
+            <View style={{ display: 'flex', flexDirection: 'column', rowGap: '30px' }}>
                 <Image source={require("../assets/deliver.png")} style={{ width: "100%", height: 100, objectFit: "contain" }} />
                 <View>
                     <Text style={{fontWeight:'bold',fontSize:"20px"}}>Thank you!!!</Text>
@@ -17,7 +17,7 @@ const Confirmation = () => {
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("home")}>
                     <Text style={styles.buttonText}>Back to menu</Text>
                 </TouchableOpacity>
-            </view>
+            </View>
         </SafeAreaView>
     )
 }
