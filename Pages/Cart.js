@@ -43,9 +43,9 @@ export default function Cart() {
                     };
                     await setDoc(doc(db, "orders", userId), myItem);
                 }
+                navigation.navigate('confirmation')
                 Alert.alert("Successfully ordered");
                 // clearCart();
-                navigation.navigate('confirmation')
             } else {
                 Alert.alert("Failed to place the order");
 
