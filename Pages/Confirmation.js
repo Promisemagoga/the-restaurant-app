@@ -1,28 +1,24 @@
 import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { useNavigation } from 'react-router-dom'
+import { useNavigation } from 'react-router-dom';
 
-const Confirmation = () => {
-
+export default function Confirmation() {
     const navigation = useNavigation()
-
+  
     return (
         <SafeAreaView style={styles.container}>
-            <View style={{ display: 'flex', flexDirection: 'column', rowGap: '30px' }}>
-                <Image source={require("../assets/deliver.png")} style={{ width: "100%", height: 100, objectFit: "contain" }} />
-                <View>
-                    <Text style={{fontWeight:'bold',fontSize:"20px"}}>Thank you!!!</Text>
-                    <Text style={{fontWeight:"normal",fontSize:"16px"}}>Your order has been recieved and it will be delivered in 10 - 15 minutes.</Text>
-                </View>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("home")}>
-                    <Text style={styles.buttonText}>Back to menu</Text>
-                </TouchableOpacity>
+        <View style={{ display: 'flex', flexDirection: 'column', rowGap: '30px' }}>
+            <Image source={require("../assets/deliver.png")} style={{ width: "100%", height: 100, objectFit: "contain" }} />
+            <View>
+                <Text style={{fontWeight:'bold',fontSize:"20px"}}>Thank you!!!</Text>
+                <Text style={{fontWeight:"normal",fontSize:"16px"}}>Your order has been recieved and it will be delivered in 10 - 15 minutes.</Text>
             </View>
-        </SafeAreaView>
-    )
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("home")}>
+                <Text style={styles.buttonText}>Back to menu</Text>
+            </TouchableOpacity>
+        </View>
+    </SafeAreaView>
+    );
 }
-
-export default Confirmation
 
 const styles = StyleSheet.create({
     container: {
