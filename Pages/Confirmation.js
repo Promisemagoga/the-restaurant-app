@@ -14,7 +14,7 @@ export default function Confirmation() {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.secContainer}>
-                <Image source={require("../assets/deliver.png")} style={{ width: "100%", height: 100, objectFit: "contain" }} />
+                <Image source={require("../assets/delivery.png")} style={{ width: "100%", height: 150, objectFit: "contain" }} />
                 <View style={styles.typCont}>
                     <Text style={styles.heading}>Thank you!!!</Text>
                     <Text style={styles.paragraph}>Your order has been recieved and it will be delivered in 10 - 15 minutes.</Text>
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 30,
         fontWeight: 'bold',
+        color: 'orange'
     },
     paragraph: {
         width: "80%",
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         backgroundColor: "#fea70d",
         width: "50%",
-        height: 60,
+        height: 50,
         borderRadius: 100,
         marginTop: 40,
         marginBottom: '20px'

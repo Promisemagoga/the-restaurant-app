@@ -9,6 +9,7 @@ import { db } from '../Config/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 import { useStripe } from '@stripe/stripe-react-native';
+import { Button } from 'react-native';
 
 export default function Cart() {
     const [listCart, setListCart] = useState([])
@@ -58,8 +59,8 @@ export default function Cart() {
             }
         }
     }
-    
-    
+
+
 
 
 
@@ -164,20 +165,20 @@ export default function Cart() {
 
 
 
-    const deleteFunc = async (id) => {
-        const userId = await getUserAsync();
-        const itemRef = doc(collection(db, "carts"), userId);
-        const itemSnapshot = await getDoc(itemRef);
+  const deleteFunc = async (id) => {
+    const userId = await getUserAsync();
+    const itemRef = doc(db, "carts", userId);
+    const itemSnapshot = await getDoc(itemRef);
 
-        if (itemSnapshot.exists()) {
-            const updatedItems = itemSnapshot.data().item.filter((item) => item.itemId !== id);
-            await updateDoc(itemRef, { item: updatedItems });
-            // setListCart(updatedItems)
-            Alert.alert('Item successfully deleted!');
-        } else {
-            console.log('Cart not found');
-        }
+    if (itemSnapshot.exists()) {
+        const updatedItems = itemSnapshot.data().item.filter((item) => item.itemId !== id);
+        await updateDoc(itemRef, { item: updatedItems });
+        Alert.alert('Item successfully deleted!');
+    } else {
+        console.log('Cart not found');
     }
+}
+
 
 
     const increaseQuantity = (data, index) => {
@@ -212,6 +213,7 @@ export default function Cart() {
             const itemRef = doc(collection(db, "carts"), userId);
             await deleteDoc(itemRef);
             console.log('Cart cleared successfully');
+            setListCart([])
         } catch (error) {
             console.error('Error clearing cart:', error);
         }
@@ -271,6 +273,9 @@ export default function Cart() {
                                 </View>
                             </View>
                         ))}
+                        <TouchableOpacity onPress={clearCart} style={styles.clearBtn}>
+                            <Text style={styles.clearTxt}>Clear Cart</Text>
+                        </TouchableOpacity>
                     </>
                 }
             </ScrollView>
@@ -457,6 +462,17 @@ const styles = StyleSheet.create({
         // padding: 10,
         margin: 20,
         borderRadius: 5,
+    },
+
+    clearBtn:{
+        width: 350,
+        margin:20,
+    },
+
+    clearTxt:{
+        marginLeft:'auto',
+        textDecorationLine:"underline",
+        color:'orange'
     },
 
     displayButton: {
