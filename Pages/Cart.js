@@ -45,7 +45,7 @@ export default function Cart() {
                 }
                 navigation.navigate('confirmation')
                 Alert.alert("Successfully ordered");
-                // clearCart();
+                clearCart();
             } else {
                 Alert.alert("Failed to place the order");
 
