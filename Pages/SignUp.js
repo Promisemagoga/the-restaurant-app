@@ -20,7 +20,7 @@ export default function SignUp({setIsAuth}) {
      
             if (authenticated) {
                 const user = JSON.stringify(authenticated);
-                await AsyncStorage.setItem("users", user).then(() => {
+                await AsyncStorage.setItem("user", user).then(() => {
                     console.log("saved")
                 })
                 console.log("User Successfully registered");

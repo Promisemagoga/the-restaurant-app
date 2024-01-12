@@ -174,6 +174,7 @@ export default function Cart() {
         const updatedItems = itemSnapshot.data().item.filter((item) => item.itemId !== id);
         await updateDoc(itemRef, { item: updatedItems });
         Alert.alert('Item successfully deleted!');
+        fetchCartItems()
     } else {
         console.log('Cart not found');
     }

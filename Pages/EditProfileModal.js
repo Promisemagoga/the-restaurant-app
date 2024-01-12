@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Alert, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native';
 import { ScrollView } from 'react-native';
@@ -53,9 +53,12 @@ export default function EditProfileModal({ setOpenModal, updateUserInfo }) {
         await updateDoc(docRef, dataToSave)
             .then(() => {
                 console.log('Data successfully updated!!');
+                Alert.alert('Data successfully updated!!');
+                fetchData()
             })
             .catch((error) => {
                 console.error('Error updating data:', error)
+                Alert.alert("Error updating data")
             })
     }
 
