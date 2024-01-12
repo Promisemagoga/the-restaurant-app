@@ -58,7 +58,6 @@ export default function EditProfileModal({ setOpenModal, updateUserInfo }) {
             })
             .catch((error) => {
                 console.error('Error updating data:', error)
-                Alert.alert("Error updating data")
             })
     }
 
