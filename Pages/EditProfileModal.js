@@ -52,9 +52,9 @@ export default function EditProfileModal({ setOpenModal, updateUserInfo }) {
         const docRef = doc(db, "userData", docId)
         await updateDoc(docRef, dataToSave)
             .then(() => {
+                fetchData()
                 console.log('Data successfully updated!!');
                 Alert.alert('Data successfully updated!!');
-                fetchData()
             })
             .catch((error) => {
                 console.error('Error updating data:', error)
